@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from math import sin, cos, tan, log, radians
 import math
 import re
 
@@ -6,6 +7,7 @@ split_operator = lambda formula: re.split('(?<!\()[+ \- \* \/]', formula)
 
 #演算子の取り出し
 def extract_operator(formula):
+	print "[*] Extracting operator..."
 	res = []
 	operator = ['+', '-', '*', '/']
 	for r in formula:
@@ -50,6 +52,8 @@ def function(formula, x):
 
 expression = raw_input("数式: ")
 formula = expression.split('=')[1] #右辺の取り出し
+#冪上を括弧で囲む
+formula = re.sub(r'\^([^+ \- \* \/]+)', r'^(\1)', formula)
 
 #リスト化
 operators = extract_operator(formula) #演算子のリストに変換
@@ -59,8 +63,14 @@ sections = split_operator(formula) #項のリストに変換
 sections = convertMultiple(sections) #2x -> 2*x
 
 converted_formula = ""
+TriFunPattern = re.compile('(sin|cos|tan)')
 for r, sec in enumerate(sections):
-	converted_formula += sec
+	print "[*]sec is " + str(sec) + "..."
+	#ラジアン変換処理を加味した文字列を足し入れる
+	if re.match(TriFunPattern, sec[0:3]) != None:
+		converted_formula += re.sub(r'(sin|cos|tan)(.+)', r'\1(radians\2)', sec)
+	else:
+		converted_formula += sec
 	if r == len(sections)-1:
 		continue
 	converted_formula += operators[r]
@@ -73,8 +83,9 @@ for func in math_lib_func:
 	addMath = "math." + func
 	converted_formula = converted_formula.replace(func, addMath)
 """
-converted_formula = re.sub(r'(sin|cos|tan|log)(.+)(.+)', r'math.\1(math.radians(\2))\3', converted_formula)
-converted_formula = re.sub(r'(x\*\*)(\d+)', r'(\1\2)'  , converted_formula)
+#print converted_formula
+#converted_formula = re.sub(r'(sin|cos|tan)(.+)(.+)', r'math.\1(math.radians(\2))\3', converted_formula)
+converted_formula = re.sub(r'(x\*\*)([0-9 ( )]+)', r'(\1(\2))'  , converted_formula)
 
 print "Converted " + converted_formula + "!!"
 
@@ -82,10 +93,12 @@ print "if x = 45, value is " + str(function(converted_formula, 45)) #f(x) = conv
 
 #ラジアン変換しなければいけない -> 解決?
 
+#y=x^4-3x^3+5x^2*cos(2x)/sin(2x)-log(x)+10x+1000 -> y=(x**4)-3*(x**3)+5*(x**2)*cos(radians(2*x))/sin(radians(2*x))-log(x)+10*x+1000
+#y=2x^3-10x^2+10/x*cos(2x)/sin(2x)*log(x) -> y=2*(x**3)-10*(x**2)+10/x*cos(radians(2*x))/sin(radians(2*x))*log(x)
+#y=10x^2-1000/x*log(1000x)/sin(2x) -> y=10*(x**2)-1000/x*log(1000*x)/sin(radians(2*x))
+#y=x^2-10x+2^x+100 -> y=(x**2)-10*x+2**x+100
 
-
-
-
+#y=x^2-10x+100^10x+100 -> y=x**(2)-10*x+100**(10*x)+100
 
 
 
