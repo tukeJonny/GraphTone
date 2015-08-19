@@ -68,7 +68,9 @@ for r, sec in enumerate(sections):
 	print "[*]sec is " + str(sec) + "..."
 	#ラジアン変換処理を加味した文字列を足し入れる
 	if re.match(TriFunPattern, sec[0:3]) != None:
-		converted_formula += re.sub(r'(sin|cos|tan)(.+)', r'\1(radians\2)', sec)
+		#converted_formula += re.sub(r'(sin|cos|tan)(.+)', r'\1(radians\2)', sec) #ココが冪乗の括弧のくくり方がおかしい原因かも
+		converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)', r'\1(radians\2)', sec)  #version2 ()でくくっていないので、計算順序がおかしいかもしれない
+		#converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)(\^\d+)?', r'(\1(radians\2)\3)', sec) version3 -> Tracebackが起きる ^2
 	else:
 		converted_formula += sec
 	if r == len(sections)-1:
@@ -92,14 +94,14 @@ print "Converted " + converted_formula + "!!"
 print "if x = 45, value is " + str(function(converted_formula, 45)) #f(x) = converted_formula とした時の f(45)
 
 #ラジアン変換しなければいけない -> 解決?
+#
 
-#y=x^4-3x^3+5x^2*cos(2x)/sin(2x)-log(x)+10x+1000 -> y=(x**4)-3*(x**3)+5*(x**2)*cos(radians(2*x))/sin(radians(2*x))-log(x)+10*x+1000
-#y=2x^3-10x^2+10/x*cos(2x)/sin(2x)*log(x) -> y=2*(x**3)-10*(x**2)+10/x*cos(radians(2*x))/sin(radians(2*x))*log(x)
-#y=10x^2-1000/x*log(1000x)/sin(2x) -> y=10*(x**2)-1000/x*log(1000*x)/sin(radians(2*x))
-#y=x^2-10x+2^x+100 -> y=(x**2)-10*x+2**x+100
-
-#y=x^2-10x+100^10x+100 -> y=x**(2)-10*x+100**(10*x)+100
-
+#y=x^4-3x^3+5x^2*cos(2x)/sin(2x)-log(x)+10x+1000 -> (x**((4)))-3*(x**((3)))+5*(x**((2)))*cos(radians(2*x))/sin(radians(2*x))-log(x)+10*x+1000
+#y=2x^3-10x^2+10/x*cos(2x)/sin(2x)*log(x) -> 2*(x**((3)))-10*(x**((2)))+10/x*cos(radians(2*x))/sin(radians(2*x))*log(x)
+#y=10x^2-1000/x*log(1000x)/sin(2x) ->  10*(x**((2)))-1000/x*log(1000*x)/sin(radians(2*x))
+#y=x^2-10x+2^x+100 -> (x**((2)))-10*x+2**(x)+100
+#y=x^2-10x+100^10x+100 ->
+#y=x^3+sin(2x)^2+cos(2x)^10+100x^2+10x+1 ->  
 
 
 
