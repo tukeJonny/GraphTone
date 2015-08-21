@@ -1,7 +1,9 @@
 #-*- coding: utf-8 -*-
 from math import sin, cos, tan, log, radians
-import math
 import re
+
+import numpy
+import pyaudio
 
 split_operator = lambda formula: re.split('(?<!\()[+ \- \* \/]', formula)
 
@@ -16,13 +18,13 @@ def extract_operator(formula):
 	return res
 
 #2x -> 2*x
-def convertMultiple(sections):
+def convertMultiple(sections, target):
 	print "args is " + str(sections)
 	p = re.compile("^\d+$") #数値が連続しているだけのやつ？
 
 	for r,sec in enumerate(sections):
 		print "[*] Processing " + sec + "..."
-		spl = sec.split('x') #xで切り分ける
+		spl = sec.split(target) #xで切り分ける
 		print "[*] Converted string to array: " + str(spl)
 		spl_0_len = len(spl[0]) #xで切り分けた左側の文字数
 		print "[*] spl_0_len is " + str(spl_0_len)
@@ -35,11 +37,17 @@ def convertMultiple(sections):
 
 		if spl_0_len and before_x.isdigit(): #xの直前が数値ならば、*を追加
 			print "[*] Changing..."
-			sections[r] = str(spl[0]) + "*x"
+			sections[r] = str(spl[0]) + "*" + target
 		else:                                #そうでなければ、そのまま連結
-			sections[r] = str(spl[0]) + "x"
+			sections[r] = str(spl[0]) + target
 		if len(spl) > 1: #xの右側がちゃんとあるかチェック(配列外参照を防ぐため)
 			sections[r] = sections[r] + spl[1]
+		#sin, cos, tan, logのチェック
+		sections[r] = re.sub(r'(\d+)sin', r'\1*sin', sections[r])
+		sections[r] = re.sub(r'(\d+)cos', r'\1*cos', sections[r])
+		sections[r] = re.sub(r'(\d+)tan', r'\1*tan', sections[r])
+		sections[r] = re.sub(r'(\d+)log', r'\1*log', sections[r])
+
 		print "Converted " + sections[r] + "!!\r\n"
 
 	return sections
@@ -60,7 +68,8 @@ operators = extract_operator(formula) #演算子のリストに変換
 sections = split_operator(formula) #項のリストに変換
 
 #演算子の補足
-sections = convertMultiple(sections) #2x -> 2*x
+sections = convertMultiple(sections, 'x') #2x -> 2*x
+
 
 converted_formula = ""
 TriFunPattern = re.compile('(sin|cos|tan)')
@@ -100,8 +109,74 @@ print "if x = 45, value is " + str(function(converted_formula, 45)) #f(x) = conv
 #y=2x^3-10x^2+10/x*cos(2x)/sin(2x)*log(x) -> 2*(x**((3)))-10*(x**((2)))+10/x*cos(radians(2*x))/sin(radians(2*x))*log(x)
 #y=10x^2-1000/x*log(1000x)/sin(2x) ->  10*(x**((2)))-1000/x*log(1000*x)/sin(radians(2*x))
 #y=x^2-10x+2^x+100 -> (x**((2)))-10*x+2**(x)+100
-#y=x^2-10x+100^10x+100 ->
-#y=x^3+sin(2x)^2+cos(2x)^10+100x^2+10x+1 ->  
+#y=x^2-10x+100^10x+100 -> (x**((2)))-10*x+100**(10*x)+100
+#y=x^3+sin(2x)^2+cos(2x)^10+100x^2+10x+1 ->  (x**((3)))+sin(radians(2*x))**(2)+cos(radians(2*x))**(10)+100*(x**((2)))+10*x+1
+
+
+""" 以下、オーディオ部分 """
+
+
+"""
+#オーディオ鳴らす
+def play_tone(stream, coordinate, frequency=440, length=1, rate=44100):
+    chunks = []
+    print "ary is " + str(coordinate)
+    chunks.append(coordinate)
+    chunk = numpy.concatenate(chunks) * 0.25
+    stream.write(chunk.astype(numpy.float32).tostring())
+
+def calculateCoordinate(converted_formula):
+	res = []
+	for x in range(1, 100): # x座標 1 ~ 100
+		res.append(0.001 * function(converted_formula, x))
+		play_tone(stream, [0.001 * function(converted_formula, x)])
+	return(res)
+
+#coordinate = calculateCoordinate(converted_formula)
+p = pyaudio.PyAudio()
+stream = p.open(format=pyaudio.paFloat32,
+                channels=1, rate=44100, output=1)
+calculateCoordinate(converted_formula)
+#play_tone(stream, coordinate)
+stream.close()
+p.terminate()
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
