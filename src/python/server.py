@@ -6,10 +6,13 @@ request Ex.
 http://localhost:8080?expression="y=x^2"&image=true&sound=true
 '''
 
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from SocketServer import ThreadingMixIn
 import threading
 import urlparse
+import zipfile
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+from SocketServer import ThreadingMixIn
+
+
 
 class Handler(BaseHTTPRequestHandler):
     '''
@@ -33,10 +36,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def read_file(self):
         message_parts=[""]
-        f = open('./send.txt', 'r')
+        f = open('./send.zip', 'r')
         for line in f:
             message_parts.append(line)
         self.message = "".join(message_parts)
+
+    def zip(self):
+        zipFile = zipfile.ZipFile("./send.zip","w",zipfile.ZIP_DEFLATED)
+        zipFile.write("./image.png")
+        zipFile.write("./sound.mp3")
+        zipFile.close()
 
     def do_GET(self):
         path = urlparse.urlparse(self.path)
