@@ -44,14 +44,16 @@ from os import*
 #付点
 #オクターブ増減
 
-xPosArray = [r for r in range(-5, 5)]
-yPosArray = [r**2 for r in range(-5, 5)]
+xPosArray = [r for r in range(-15, 16)]
+yPosArray = [r**2 for r in range(-15, 16)]
 
-sounds = ["c", "d", "e", "f", "g", "a", "b", "r"]
+sounds = ["c", "c+", "d", "d+" ,"e", "e+", "f", "f+", "g", "g+", "a", "a+", "b", "b+"]
 mappingTable = {}
+reverseMappingTable = {}
 
-#マッピングテーブルを初期化
+#マッピングテーブルを初期化()
 def initMappingTable(yPosArray):
+    """
     minY = min(yPosArray)
     maxY = max(yPosArray)
     diff = abs(maxY - minY)
@@ -63,42 +65,47 @@ def initMappingTable(yPosArray):
         mappingTable[sum_value] = sounds[r]
         sum_value += eachSectionRange
     print "Initted Mapping Table: " + str(mappingTable)
+    """
 
 #マッピングテーブルに基づき、引数に渡されたy座標が含まれている範囲のセクションの音を返す
 def getMappedSound(y):
     print "Received value: " + str(y)
-    idx = 0
-    for key,val in sorted(mappingTable.items()):
-        if y <= key or idx == len(sounds) - 1:
-            return val
-        idx += 1
+    absY = abs(y)
+    div = absY / len(sounds)
+    mod = absY % (len(sounds)+1)
+    if y is 0:  #0の時はめっちゃ低い音にしてみる(どう割り当てようか悩み中)
+        return "c-<<<<<"
+    ret = ""
+    ret += sounds[mod-1]
+    if y % len(sounds) is 0:
+        div -= 1  #14, 28, ...のようなlen(sounds)の倍数について、数直線上でいうところの０側に含まれる
+    print "Octave count is ", div
+    if y >= 0:
+        ret += ">"*div
+    else:
+        ret += "<"*div
+    return ret
 
 #x座標, y座標に対して、パラメータを設定した音符１つ分のMMLコマンド文字列を返す
-def getMMLCommandString(x, y, nextX, nextY):
+def getMMLCommandString(x, y):
     #print "Mapped Table: " + str(mappingTable)
     ret = ""
     #音量(Default: 10)
-    ret += "V10"
+    ret += "V15"
     #テンポ(Default: 10)
-    ret += "T10"
+    ret += "T120"
     #音(マップされた値に応じて変化させる)
     ret += getMappedSound(y)
-    print "Mapped Sound is " + str(ret[6:])
-    #オクターブ増減
-    diffy = nextY - y
-    if diffy >= 0: #次のy座標の方が大きいならば１オクターブ上げる
-        ret += ">"
-    else:
-        ret += "<" #今見ているy座標の方が大きいならば１オクターブ下げる
+    print "Mapped Sound is " + str(ret[7:])
+
     return ret
 
 #MMLコマンド生成(ここで、x,y座標を用いて楽譜を生成する)
 def generateMMLCommandsString(xPosArray, yPosArray):
     MML = ""
-    initMappingTable(yPosArray)
-    for r in range(1, len(xPosArray)):
-        MML += getMMLCommandString(xPosArray[r-1], yPosArray[r-1], xPosArray[r], yPosArray[r])
-    MML += "V10T10" + getMappedSound(yPosArray[len(yPosArray)-1])
+    #initMappingTable(yPosArray)
+    for r in range(len(xPosArray)):
+        MML += getMMLCommandString(xPosArray[r], yPosArray[r])
     return MML
 
 #Wavファイルの生成
