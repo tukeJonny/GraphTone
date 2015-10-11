@@ -1,16 +1,25 @@
 # -*- coding: utf-8 -*-
 from Components import Config
+from Components import ConstantValueGenerator
 from Components import SquareWaveOscillator
+from Components import SineWaveOscillator
+from Components import Subtraction
+from Components import Inverter
+from Components import FrequencyModulator
+from Components import Gate
 from Components import Clock
-from Components import Renderer
+from Components import Mixer
+from Components import Amplifeir
 from Components import WaveFileSink
+from Components import Renderer
 
-from Sequencer import Sequencer
 from Sequencer import MMLCompiler
+from Sequencer import Sequencer
 
 from subprocess import*
 from time import*
 from os import*
+import re
 
 
 #MML = "t120o4l4cdefedcrefgagfercrcrcrcrl16crcrdrdrererfrfrl4edcr"
@@ -44,46 +53,76 @@ from os import*
 #付点
 #オクターブ増減
 
-xPosArray = [r for r in range(-15, 16)]
-yPosArray = [r**2 for r in range(-15, 16)]
+xPosArray = [r for r in range(-20, 21)]
+yPosArray = [r**2 for r in range(-20, 21)]
 
-sounds = ["c", "c+", "d", "d+" ,"e", "e+", "f", "f+", "g", "g+", "a", "a+", "b", "b+"]
+#sounds = ['c', 'c+', 'd', 'd+', 'e', 'e+', 'f', 'f+', 'g', 'g+', 'a', 'a+', 'b', 'b+']
+sounds = ['c', 'd', 'e', 'f','g', 'a','b']
+rev_sounds = ['b', 'a', 'g', 'f', 'e', 'd','c']
 mappingTable = {}
 reverseMappingTable = {}
 
-#マッピングテーブルを初期化()
-def initMappingTable(yPosArray):
-    """
-    minY = min(yPosArray)
-    maxY = max(yPosArray)
-    diff = abs(maxY - minY)
-    print "maxY = " + str(maxY) + ", minY = " + str(minY)
-    eachSectionRange = diff / len(sounds)
-    sum_value = eachSectionRange
-    for r in range(len(sounds)):
-        print str(sum_value) + " = " + str(sounds[r])
-        mappingTable[sum_value] = sounds[r]
-        sum_value += eachSectionRange
-    print "Initted Mapping Table: " + str(mappingTable)
-    """
+mml_pattern = re.compile(r"V\d+T\d+>*[cdefgab]", re.IGNORECASE)
+
+#Toneクラス
+class Tone(object):
+    def __init__(self):
+        self.osc1 = SquareWaveOscillator()
+        self.osc2 = SquareWaveOscillator()
+
+        self.mixer = Mixer()
+        self.mixer.add_track(0, "base_tone", Gate(source=self.osc1, state=(True, False)))
+        self.mixer.add_track(1, "detuned_tone",
+                             Gate(Inverter(
+                                 source=FrequencyModulator(
+                                     source=self.osc2,
+                                     delta=ConstantValueGenerator(2))),
+                                  state=(False, True)))
+
+    def get_value(self, tick):
+        return self.mixer.get_value(tick)
+    
+    def get_frequency(self):
+        return self.osc1.frequency
+
+    def set_frequency(self, value):
+        self.osc1.frequency = value
+        self.osc2.frequency = value
+
+    frequency = property(get_frequency, set_frequency)
+    
+
 
 #マッピングテーブルに基づき、引数に渡されたy座標が含まれている範囲のセクションの音を返す
 def getMappedSound(y):
     print "Received value: " + str(y)
     absY = abs(y)
-    div = absY / len(sounds)
-    mod = absY % (len(sounds)+1)
-    if y is 0:  #0の時はめっちゃ低い音にしてみる(どう割り当てようか悩み中)
-        return "c-<<<<<"
-    ret = ""
-    ret += sounds[mod-1]
-    if y % len(sounds) is 0:
-        div -= 1  #14, 28, ...のようなlen(sounds)の倍数について、数直線上でいうところの０側に含まれる
-    print "Octave count is ", div
     if y >= 0:
-        ret += ">"*div
+        div = absY / len(sounds)
     else:
+        div = absY / (len(sounds)+1)
+    mod = absY % len(sounds)
+    
+    ret = ""
+    
+    if y < 0:
+        mod -= 1
+
+    if y >= 0:
+        
+        #ret += "b+"
+        print "Octave count is ", div
+        ret += ">"*div
+        #ret += sounds[mod]
+        ret += "c"
+    else:
+        
+        #ret += "b+"
+        print "Octave count is ", div
         ret += "<"*div
+        #ret += rev_sounds[mod]
+        ret += "c"
+    
     return ret
 
 #x座標, y座標に対して、パラメータを設定した音符１つ分のMMLコマンド文字列を返す
@@ -91,12 +130,12 @@ def getMMLCommandString(x, y):
     #print "Mapped Table: " + str(mappingTable)
     ret = ""
     #音量(Default: 10)
-    ret += "V15"
-    #テンポ(Default: 10)
+    ret += "V10"
+    #テンポ(Default: 120)
     ret += "T120"
     #音(マップされた値に応じて変化させる)
     ret += getMappedSound(y)
-    print "Mapped Sound is " + str(ret[7:])
+    print "Mapped Sound is " + str(ret[4:])
 
     return ret
 
@@ -109,14 +148,19 @@ def generateMMLCommandsString(xPosArray, yPosArray):
     return MML
 
 #Wavファイルの生成
+
 def generateWavFile(MMLCommands):
     mml_compiler = MMLCompiler()
-    music_sequence = mml_compiler.to_sequence(MMLCommands)
-    
-    osc = SquareWaveOscillator()
     sequencer = Sequencer()
-    sequencer.add_track(0, "tone1", osc, osc)
-    sequencer.add_sequence(0, music_sequence)
+    tone1 = Tone()
+    sequencer.add_track(0, "manual", tone1, tone1)
+    print "regex result...", re.findall(mml_pattern, MMLCommands)
+    for mml in re.findall(mml_pattern, MMLCommands):
+        #print "Track_num = ", track_num
+        print "mml = ", mml
+        sequence = mml_compiler.to_sequence(mml)
+        sequencer.add_sequence(0, sequence)
+        print "Sequence Added."
 
     sink = WaveFileSink(output_file_name="output.wav")
     clock = Clock()
