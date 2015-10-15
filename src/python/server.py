@@ -3,12 +3,21 @@
 
 '''
 request Ex.
-http://localhost:8080?expression="y=x^2"&image=true&sound=true
+http://localhost:8080?expression=y=x^2&image=True&sound=True&range=-5:5
+
+--params--
+expression="y=x^2"
+image: True or False    #first letter is only Uppercase　
+sound: True or False    #first letter is only Uppercase
+range: "min range : max range"
+
+use "%20" to input space
 '''
 
 import threading
 import urlparse
 import zipfile
+import time
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from SocketServer import ThreadingMixIn
 
@@ -16,13 +25,16 @@ from SocketServer import ThreadingMixIn
 
 class Handler(BaseHTTPRequestHandler):
     '''
-    self.message
-    self.imageBool
-    self.imageBool
+    def __init__(self):
+        self.expression = "y=x^2"
+        self.imageBool = False
+        self.soundBool = False
+        self.range = [-5,5]
     '''
 
     def judge_param(self,param,value):
         if(param == "expression"):
+            self.expression = value
             '''
             数式から画像、音声を生成する処理を行う
             '''
@@ -33,6 +45,8 @@ class Handler(BaseHTTPRequestHandler):
         if(param == "sound"):
             if(value):
                 self.imageBool = True
+        if(param == "range"):
+            self.range = map(int,value.split(":"))
 
     def read_file(self):
         message_parts=[""]
@@ -59,11 +73,14 @@ class Handler(BaseHTTPRequestHandler):
                 self.judge_param(param=param[0],value=param[1])
         
         #responce
+        #time.sleep(10)         #wait check
         self.send_response(200)
         self.end_headers()
+        self.zip()
         self.read_file()
         self.wfile.write(self.message)
         return 
+
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
