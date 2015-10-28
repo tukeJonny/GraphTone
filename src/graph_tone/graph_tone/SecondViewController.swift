@@ -37,7 +37,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         self.view.addSubview(myTextField)
         
         //再生する音源のURLを生成.
-        let soundFilePath : NSString = NSBundle.mainBundle().pathForResource("Juku", ofType: "mp3")!
+        let soundFilePath : NSString = NSBundle.mainBundle().pathForResource("root", ofType: "mp3")!
         let fileURL : NSURL = NSURL(fileURLWithPath: soundFilePath as String)!
         myAudioPlayer = AVAudioPlayer(contentsOfURL: fileURL, error: nil)
         myAudioPlayer!.delegate = self
@@ -84,11 +84,10 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
             exp = myTextField.text as String
             println(exp)
             // var myUrl:NSURL = NSURL(string:"http://localhost:8080")!
-            let req1 = "http://localhost:8080?expression='"
-            let req2 = "'&image=true&sound=true"
+            //let host = "http://133.130.53.205:8080?expression='"+exp+"'&image=true&sound=true"
             let host = "http://localhost:8080?expression='"+exp+"'&image=true&sound=true"
             println(host)
-            var myUrl:NSURL = NSURL(string:"http://localhost:8080?expression='"+exp+"'&image=true&sound=true")!
+            var myUrl:NSURL = NSURL(string:host)!
             var myRequest:NSURLRequest  = NSURLRequest(URL: myUrl)
             // NSURLConnection.sendAsynchronousRequest(myRequest, queue: NSOperationQueue.mainQueue(), completionHandler: self.getHttp)
             
@@ -110,7 +109,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
             self.unZip(filePath) // 解凍
             
             // 画像表示
-            let imagePath = "\(documentsPath)/send/image.png"
+            let imagePath = "\(documentsPath)/image.png"
             myImageView = UIImageView(frame: CGRectMake(0,0,240,240))
             let myImage: UIImage = UIImage(contentsOfFile: imagePath)!
             myImageView.image = myImage
@@ -118,7 +117,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
             self.view.addSubview(myImageView)
             
             // 音源設定
-            let soundPath = "\(documentsPath)/send/sound.mp3"
+            let soundPath = "\(documentsPath)/sound.mp3"
             let fileURL : NSURL = NSURL(fileURLWithPath: soundPath)!
             myAudioPlayer = AVAudioPlayer(contentsOfURL: fileURL, error: nil)
             myAudioPlayer!.delegate = self

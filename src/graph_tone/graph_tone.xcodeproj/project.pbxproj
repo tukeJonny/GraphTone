@@ -18,8 +18,7 @@
 		5118BA6A1BC4C099001B835A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA691BC4C099001B835A /* SecondViewController.swift */; };
 		5118BA6C1BC4C0B3001B835A /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */; };
 		5118BA701BC4C179001B835A /* hoge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6F1BC4C179001B835A /* hoge.m */; };
-		5118BA741BC75716001B835A /* parab-xaxes2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5118BA731BC75716001B835A /* parab-xaxes2.png */; };
-		518C412E1BCDED7400FFE6CB /* Juku.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 518C412D1BCDED7400FFE6CB /* Juku.mp3 */; };
+		CA588AF71BD096E9002CDFBF /* root.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CA588AF61BD096E9002CDFBF /* root.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,9 +50,8 @@
 		5118BA6D1BC4C178001B835A /* graph_tone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "graph_tone-Bridging-Header.h"; sourceTree = "<group>"; };
 		5118BA6E1BC4C179001B835A /* hoge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hoge.h; sourceTree = "<group>"; };
 		5118BA6F1BC4C179001B835A /* hoge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hoge.m; sourceTree = "<group>"; };
-		5118BA731BC75716001B835A /* parab-xaxes2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "parab-xaxes2.png"; path = "../../../../Desktop/backup/graphTone_v1/graphTone/parab-xaxes2.png"; sourceTree = "<group>"; };
-		518C412D1BCDED7400FFE6CB /* Juku.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Juku.mp3; path = "../../../../Music/iTunes/iTunes Media/Music/Unknown Artist/Unknown Album/Juku.mp3"; sourceTree = "<group>"; };
 		7E56B0D9F099C26F3097C2DE /* libPods-graph_tone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-graph_tone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA588AF61BD096E9002CDFBF /* root.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = root.mp3; path = ../../../../../Music/root.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +96,7 @@
 		5118BA441BC4C038001B835A /* graph_tone */ = {
 			isa = PBXGroup;
 			children = (
-				518C412D1BCDED7400FFE6CB /* Juku.mp3 */,
-				5118BA731BC75716001B835A /* parab-xaxes2.png */,
+				CA588AF61BD096E9002CDFBF /* root.mp3 */,
 				5118BA471BC4C038001B835A /* AppDelegate.swift */,
 				5118BA671BC4C084001B835A /* FirstViewController.swift */,
 				5118BA691BC4C099001B835A /* SecondViewController.swift */,
@@ -170,6 +167,7 @@
 				5118BA3F1BC4C038001B835A /* Frameworks */,
 				5118BA401BC4C038001B835A /* Resources */,
 				2E1EF307237A0EF33F822B64 /* Copy Pods Resources */,
+				ECD9D01872DE982C4616A439 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -240,10 +238,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5118BA741BC75716001B835A /* parab-xaxes2.png in Resources */,
 				5118BA4D1BC4C038001B835A /* Main.storyboard in Resources */,
-				518C412E1BCDED7400FFE6CB /* Juku.mp3 in Resources */,
 				5118BA521BC4C038001B835A /* LaunchScreen.xib in Resources */,
+				CA588AF71BD096E9002CDFBF /* root.mp3 in Resources */,
 				5118BA4F1BC4C038001B835A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +283,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ECD9D01872DE982C4616A439 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-graph_tone/Pods-graph_tone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
