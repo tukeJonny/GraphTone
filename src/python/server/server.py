@@ -89,6 +89,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 if __name__ == '__main__':
     myIP = socket.gethostbyname(socket.gethostname())
+    print "myIP :" + myIP
     server = ThreadedHTTPServer((myIP, 8080), Handler)
     print 'Starting server, use <Ctrl-C> to stop\n'
     server.serve_forever()
