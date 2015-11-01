@@ -58,49 +58,51 @@ def function(formula, x):
 	return eval(inserted_formula)
 
 
-expression = raw_input("数式: ")
-formula = expression.split('=')[1] #右辺の取り出し
-#冪上を括弧で囲む
-formula = re.sub(r'\^([^+ \- \* \/]+)', r'^(\1)', formula)
+def convertExpression(expression):
+	#expression = raw_input("数式: ")
+	formula = expression.split('=')[1] #右辺の取り出し
+	#冪上を括弧で囲む
+	formula = re.sub(r'\^([^+ \- \* \/]+)', r'^(\1)', formula)
 
-#リスト化
-operators = extract_operator(formula) #演算子のリストに変換
-sections = split_operator(formula) #項のリストに変換
+	#リスト化
+	operators = extract_operator(formula) #演算子のリストに変換
+	sections = split_operator(formula) #項のリストに変換
 
-#演算子の補足
-sections = convertMultiple(sections, 'x') #2x -> 2*x
+	#演算子の補足
+	sections = convertMultiple(sections, 'x') #2x -> 2*x
 
 
-converted_formula = ""
-TriFunPattern = re.compile('(sin|cos|tan)')
-for r, sec in enumerate(sections):
-	print "[*]sec is " + str(sec) + "..."
-	#ラジアン変換処理を加味した文字列を足し入れる
-	if re.match(TriFunPattern, sec[0:3]) != None:
-		#converted_formula += re.sub(r'(sin|cos|tan)(.+)', r'\1(radians\2)', sec) #ココが冪乗の括弧のくくり方がおかしい原因かも
-		converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)', r'\1(radians\2)', sec)  #version2 ()でくくっていないので、計算順序がおかしいかもしれない
-		#converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)(\^\d+)?', r'(\1(radians\2)\3)', sec) version3 -> Tracebackが起きる ^2
-	else:
-		converted_formula += sec
-	if r == len(sections)-1:
-		continue
-	converted_formula += operators[r]
-	print "[+] Converting " + converted_formula + "..."
+	converted_formula = ""
+	TriFunPattern = re.compile('(sin|cos|tan)')
+	for r, sec in enumerate(sections):
+		print "[*]sec is " + str(sec) + "..."
+		#ラジアン変換処理を加味した文字列を足し入れる
+		if re.match(TriFunPattern, sec[0:3]) != None:
+			#converted_formula += re.sub(r'(sin|cos|tan)(.+)', r'\1(radians\2)', sec) #ココが冪乗の括弧のくくり方がおかしい原因かも
+			converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)', r'\1(radians\2)', sec)  #version2 ()でくくっていないので、計算順序がおかしいかもしれない
+			#converted_formula += re.sub(r'(sin|cos|tan)([^\^]+)(\^\d+)?', r'(\1(radians\2)\3)', sec) version3 -> Tracebackが起きる ^2
+		else:
+			converted_formula += sec
+		if r == len(sections)-1:
+			continue
+		converted_formula += operators[r]
+		print "[+] Converting " + converted_formula + "..."
 
-converted_formula = converted_formula.replace("^", "**") #冪乗記号の変換
-"""
-math_lib_func = ['sin', 'cos', 'tan', 'log']
-for func in math_lib_func:
-	addMath = "math." + func
-	converted_formula = converted_formula.replace(func, addMath)
-"""
-#print converted_formula
-#converted_formula = re.sub(r'(sin|cos|tan)(.+)(.+)', r'math.\1(math.radians(\2))\3', converted_formula)
-converted_formula = re.sub(r'(x\*\*)([0-9 ( )]+)', r'(\1(\2))'  , converted_formula)
+	converted_formula = converted_formula.replace("^", "**") #冪乗記号の変換
+	"""
+	math_lib_func = ['sin', 'cos', 'tan', 'log']
+	for func in math_lib_func:
+		addMath = "math." + func
+		converted_formula = converted_formula.replace(func, addMath)
+	"""
+	#print converted_formula
+	#converted_formula = re.sub(r'(sin|cos|tan)(.+)(.+)', r'math.\1(math.radians(\2))\3', converted_formula)
+	converted_formula = re.sub(r'(x\*\*)([0-9 ( )]+)', r'(\1(\2))'  , converted_formula)
 
-print "Converted " + converted_formula + "!!"
+	print "Converted " + converted_formula + "!!"
 
-print "if x = 45, value is " + str(function(converted_formula, 45)) #f(x) = converted_formula とした時の f(45)
+	return converted_formula
+	#print "if x = 45, value is " + str(function(converted_formula, 45)) #f(x) = converted_formula とした時の f(45)
 
 #ラジアン変換しなければいけない -> 解決?
 #

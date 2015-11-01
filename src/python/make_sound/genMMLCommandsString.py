@@ -14,13 +14,20 @@ from Components import WaveFileSink
 from Components import Renderer
 
 from Sequencer import MMLCompiler
+from Sequencer import MyCompiler
 from Sequencer import Sequencer
 
 from subprocess import*
 from time import*
 from os import*
+import sys
 import re
-
+from decimal import*
+from math import*
+import numpy as np
+import matplotlib.pyplot as plt
+import pylab
+import scipy.io.wavfile
 
 #MML = "t120o4l4cdefedcrefgagfercrcrcrcrl16crcrdrdrererfrfrl4edcr"
 #MML = "cdefgabc+"
@@ -53,16 +60,18 @@ import re
 #付点
 #オクターブ増減
 
-xPosArray = [r for r in range(-20, 21)]
-yPosArray = [r**2 for r in range(-20, 21)]
+outputWavFileName = "output.wav"
+outputMp3FileName = "output.mp3"
 
-#sounds = ['c', 'c+', 'd', 'd+', 'e', 'e+', 'f', 'f+', 'g', 'g+', 'a', 'a+', 'b', 'b+']
-sounds = ['c', 'd', 'e', 'f','g', 'a','b']
-rev_sounds = ['b', 'a', 'g', 'f', 'e', 'd','c']
-mappingTable = {}
-reverseMappingTable = {}
+#浮動小数点数ステップに対応したrange
+def drange(begin, end, step):
+    n = begin
+    while n+step <= end:
+        yield n
+        n += step
 
-mml_pattern = re.compile(r"V\d+T\d+>*[cdefgab]", re.IGNORECASE)
+xPosArray = [r for r in drange(-4.0, 4.0, 0.1)]
+yPosArray = [-r**3+3*r+2 for r in drange(-4.0, 4.0, 0.1)]
 
 #Toneクラス
 class Tone(object):
@@ -90,92 +99,69 @@ class Tone(object):
         self.osc2.frequency = value
 
     frequency = property(get_frequency, set_frequency)
-    
-
-
-#マッピングテーブルに基づき、引数に渡されたy座標が含まれている範囲のセクションの音を返す
-def getMappedSound(y):
-    print "Received value: " + str(y)
-    absY = abs(y)
-    if y >= 0:
-        div = absY / len(sounds)
-    else:
-        div = absY / (len(sounds)+1)
-    mod = absY % len(sounds)
-    
-    ret = ""
-    
-    if y < 0:
-        mod -= 1
-
-    if y >= 0:
-        
-        #ret += "b+"
-        print "Octave count is ", div
-        ret += ">"*div
-        #ret += sounds[mod]
-        ret += "c"
-    else:
-        
-        #ret += "b+"
-        print "Octave count is ", div
-        ret += "<"*div
-        #ret += rev_sounds[mod]
-        ret += "c"
-    
-    return ret
-
-#x座標, y座標に対して、パラメータを設定した音符１つ分のMMLコマンド文字列を返す
-def getMMLCommandString(x, y):
-    #print "Mapped Table: " + str(mappingTable)
-    ret = ""
-    #音量(Default: 10)
-    ret += "V10"
-    #テンポ(Default: 120)
-    ret += "T120"
-    #音(マップされた値に応じて変化させる)
-    ret += getMappedSound(y)
-    print "Mapped Sound is " + str(ret[4:])
-
-    return ret
-
-#MMLコマンド生成(ここで、x,y座標を用いて楽譜を生成する)
-def generateMMLCommandsString(xPosArray, yPosArray):
-    MML = ""
-    #initMappingTable(yPosArray)
-    for r in range(len(xPosArray)):
-        MML += getMMLCommandString(xPosArray[r], yPosArray[r])
-    return MML
 
 #Wavファイルの生成
-
-def generateWavFile(MMLCommands):
-    mml_compiler = MMLCompiler()
+def generateWavFile(yPosArray):
+    #mml_compiler = MMLCompiler()
+    my_compiler = MyCompiler(tempo=1500, volume=10)
+    #my_compiler.print_args() #DEBUG
     sequencer = Sequencer()
     tone1 = Tone()
     sequencer.add_track(0, "manual", tone1, tone1)
-    print "regex result...", re.findall(mml_pattern, MMLCommands)
-    for mml in re.findall(mml_pattern, MMLCommands):
+    #print "regex result...", re.findall(mml_pattern, MMLCommands)
+    #for mml in re.findall(mml_pattern, MMLCommands):
         #print "Track_num = ", track_num
-        print "mml = ", mml
-        sequence = mml_compiler.to_sequence(mml)
-        sequencer.add_sequence(0, sequence)
-        print "Sequence Added."
+    #    print "mml = ", mml
+    #for y in yPosArray:
+    sequence = my_compiler.get_sequence(yPosArray)
+    sequencer.add_sequence(0, sequence)
+    #    print "Sequence Added."
 
-    sink = WaveFileSink(output_file_name="output.wav")
+    sink = WaveFileSink(output_file_name=outputWavFileName)
     clock = Clock()
     renderer = Renderer(clock=clock, source=sequencer, sink=sink)
     renderer.do_rendering()
 
 #Wavファイル -> mp3ファイル変換
 def convertWavToMp3():
-    check_output('echo "y" | ffmpeg -i output.wav -ab 128 output.mp3', shell=True) #yを出力させているのは、同じファイル名のmp3ファイルを上書きするようにするため
+    check_output('echo "y" | ffmpeg -i ' + outputWavFileName + ' -ab 128 ' + outputMp3FileName, shell=True) #yを出力させているのは、同じファイル名のmp3ファイルを上書きするようにするため
+
+##################################### Debug #####################################
+def plot_waveform ( waveform , sampling_rate ):
+    sampling_interval = 1.0 / sampling_rate
+    times = np.arange ( len ( waveform )) * sampling_interval
+    pylab.plot ( times , waveform ) # pair of two x - and y - coordinate lists / arrays
+    pylab.title ( ' Wavファイル解析 ' )
+    pylab.xlabel ( ' Time [ sec ] ' )
+    pylab.ylabel ( ' Amplitude ' )
+    pylab.xlim ([0 , len ( waveform ) * sampling_interval ])
+    pylab.ylim ([ -1 , 1])
+    pylab.show ()
+
+def analyzeWav():  
+    #filename = fn
+    sampling_rate , waveform = scipy.io.wavfile.read ( "output.wav" )
+    waveform = waveform / 32768.0 # assume 16 - bit integer
+    plot_waveform ( waveform , sampling_rate )
+
+def analyzeYPos():
+    multipleForArray = lambda y: 4*y + 261
+    yArray = map(multipleForArray, yPosArray)
+    plt.plot(xPosArray, yArray)
+    plt.xlim(-10, 10)
+    plt.ylim(-20, 20)
+    plt.savefig('pulse.png')
+    plt.plot(xPosArray, yPosArray)
+    plt.xlim(-10, 10)
+    plt.ylim(-20, 20)
+    plt.savefig('graph.png')
+##################################### Debug #####################################
 
 def main():
-    MML = generateMMLCommandsString(xPosArray, yPosArray)
-    print "Generated MML: " + MML
-    generateWavFile(MML)
+    generateWavFile(yPosArray)
     convertWavToMp3()
+    analyzeYPos()
+    analyzeWav()
 
 if __name__ == "__main__":
     main()
