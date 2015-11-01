@@ -66,12 +66,12 @@ outputMp3FileName = "output.mp3"
 #浮動小数点数ステップに対応したrange
 def drange(begin, end, step):
     n = begin
-    while n+step <= end:
+    while n <= end+step:
         yield n
         n += step
 
-xPosArray = [r for r in drange(-4.0, 4.0, 0.1)]
-yPosArray = [-r**3+3*r+2 for r in drange(-4.0, 4.0, 0.1)]
+xPosArray = [x for x in drange(-4.0, 4.0, 0.1)]
+yPosArray = [x**2-50000 for x in drange(-4.0, 4.0, 0.1)]
 
 #Toneクラス
 class Tone(object):
@@ -103,7 +103,8 @@ class Tone(object):
 #Wavファイルの生成
 def generateWavFile(yPosArray):
     #mml_compiler = MMLCompiler()
-    my_compiler = MyCompiler(tempo=1500, volume=10)
+    yPosMin = min(yPosArray)
+    my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
     #my_compiler.print_args() #DEBUG
     sequencer = Sequencer()
     tone1 = Tone()
@@ -131,7 +132,7 @@ def plot_waveform ( waveform , sampling_rate ):
     sampling_interval = 1.0 / sampling_rate
     times = np.arange ( len ( waveform )) * sampling_interval
     pylab.plot ( times , waveform ) # pair of two x - and y - coordinate lists / arrays
-    pylab.title ( ' Wavファイル解析 ' )
+    pylab.title ( ' Wav File Analysis ' )
     pylab.xlabel ( ' Time [ sec ] ' )
     pylab.ylabel ( ' Amplitude ' )
     pylab.xlim ([0 , len ( waveform ) * sampling_interval ])
@@ -145,15 +146,11 @@ def analyzeWav():
     plot_waveform ( waveform , sampling_rate )
 
 def analyzeYPos():
-    multipleForArray = lambda y: 4*y + 261
+    multipleForArray = lambda y: y + 261
     yArray = map(multipleForArray, yPosArray)
     plt.plot(xPosArray, yArray)
-    plt.xlim(-10, 10)
-    plt.ylim(-20, 20)
     plt.savefig('pulse.png')
     plt.plot(xPosArray, yPosArray)
-    plt.xlim(-10, 10)
-    plt.ylim(-20, 20)
     plt.savefig('graph.png')
 ##################################### Debug #####################################
 
