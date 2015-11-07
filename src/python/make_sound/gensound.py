@@ -13,7 +13,6 @@ from Components import Amplifeir
 from Components import WaveFileSink
 from Components import Renderer
 
-from Sequencer import MMLCompiler
 from Sequencer import MyCompiler
 from Sequencer import Sequencer
 
@@ -28,6 +27,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pylab
 import scipy.io.wavfile
+from math import*
 
 #MML = "t120o4l4cdefedcrefgagfercrcrcrcrl16crcrdrdrererfrfrl4edcr"
 #MML = "cdefgabc+"
@@ -70,8 +70,8 @@ def drange(begin, end, step):
         yield n
         n += step
 
-xPosArray = [x for x in drange(-4.0, 4.0, 0.1)]
-yPosArray = [x**2-50000 for x in drange(-4.0, 4.0, 0.1)]
+#xPosArray = [x for x in drange(-10.0, 10.0, 0.1)]
+#yPosArray = [2**x for x in drange(-10.0, 10.0, 0.1)]
 
 #Toneクラス
 class Tone(object):
@@ -102,21 +102,13 @@ class Tone(object):
 
 #Wavファイルの生成
 def generateWavFile(yPosArray):
-    #mml_compiler = MMLCompiler()
     yPosMin = min(yPosArray)
     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
-    #my_compiler.print_args() #DEBUG
     sequencer = Sequencer()
     tone1 = Tone()
     sequencer.add_track(0, "manual", tone1, tone1)
-    #print "regex result...", re.findall(mml_pattern, MMLCommands)
-    #for mml in re.findall(mml_pattern, MMLCommands):
-        #print "Track_num = ", track_num
-    #    print "mml = ", mml
-    #for y in yPosArray:
     sequence = my_compiler.get_sequence(yPosArray)
     sequencer.add_sequence(0, sequence)
-    #    print "Sequence Added."
 
     sink = WaveFileSink(output_file_name=outputWavFileName)
     clock = Clock()
@@ -154,14 +146,9 @@ def analyzeYPos():
     plt.savefig('graph.png')
 ##################################### Debug #####################################
 
-def main():
+def genSound(yPosArray):
     generateWavFile(yPosArray)
     convertWavToMp3()
-    analyzeYPos()
-    analyzeWav()
-
-if __name__ == "__main__":
-    main()
 
 
 
