@@ -1,21 +1,13 @@
 #!/bin/bash
 
-#make sound
-echo "cythoning make_sound process..."
-cd make_sound
-cp gensound.py gensound.pyx
-python setup.py build_ext --inplace 1> /dev/null 2> /dev/null
-cd ..
+directories=("make_sound" "numerical_formula" "make_image")
+files=("gensound" "parseExpression" "makeimage")
 
-#parse exp
-echo "cythoning parseExpresson process..."
-cd numerical_formula
-cp parseExpression.py parseExpression.pyx
-python setup.py build_ext --inplace 1> /dev/null 2> /dev/null
-cd ..
+for r in {0..2}; do
+	echo "cythoning ${directories[$r]} process..."
+	cd ${directories[$r]}
+	cp ${files[$r]}.py ${files[$r]}.pyx
+	python setup.py build_ext --inplace 1> /dev/null 2> /dev/null
+	cd ..
+done
 
-#make png
-echo "cythoning make_image process..."
-cd make_image
-cp makeimage.py makeimage.pyx
-python setup.py build_ext --inplace 1> /dev/null 2> /dev/null
