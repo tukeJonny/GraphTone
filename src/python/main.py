@@ -6,6 +6,8 @@ def main():
 	beg = raw_input("from: ")
 	end = raw_input("to: ")
 	xPosArray, yPosArray = parseExpression.getCoordinate(exp, int(beg), int(end))
+	print "x = " + str(xPosArray)
+	print "y = " + str(yPosArray)
 	gensound.genSound(yPosArray)
 
 if __name__ == "__main__":

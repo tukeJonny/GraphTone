@@ -53,7 +53,10 @@ def convertMultiple(sections, target):
 
 #関数に値xを代入した、結果の値を返す
 def function(formula, x):
-	inserted_formula = formula.replace("x", str(x))
+	str_x = str(x)
+	if x < 0: #負の値が来た時、括弧でくくってやる
+		str_x = "(" + str_x + ")"
+	inserted_formula = formula.replace("x", str_x)
 	return eval(inserted_formula)
 
 
@@ -112,11 +115,10 @@ def convertExpression(expression):
 
 def getCoordinate(exp, begin, end):
 	conv_exp = convertExpression(exp)
+	print "Expression: " + conv_exp
 	print "Converted: " + conv_exp
-	xPosArray = [x for x in range(begin, end)]
-	yPosArray = []
-	for x in xPosArray:
-		yPosArray.append(function(conv_exp, x))
+	xPosArray = [x for x in range(begin, end+1)]
+	yPosArray = [function(conv_exp, x) for x in xPosArray]
 
 	#print "xPosArray = " + str(xPosArray) + "\nyPosArray = " + str(yPosArray)
 	return (xPosArray, yPosArray)
