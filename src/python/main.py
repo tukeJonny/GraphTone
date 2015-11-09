@@ -1,5 +1,8 @@
 from make_sound import *
+from make_image import *
 from numerical_formula import *
+from matplotlib import*
+import matplotlib.pyplot as plt
 
 def main():
 	exp = raw_input("Please input: ")
@@ -9,6 +12,7 @@ def main():
 	print "x = " + str(xPosArray)
 	print "y = " + str(yPosArray)
 	gensound.genSound(yPosArray)
+	makeimage.makePng(exp, xPosArray, yPosArray)
 
 if __name__ == "__main__":
 	main()
