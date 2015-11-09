@@ -5,3 +5,12 @@
 Jonny
 Morry
 Nassy
+
+#Requirement
+
+##server
+*pyaudio
+*scipy
+
+##ios
+*cocoapod
