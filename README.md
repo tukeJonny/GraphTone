@@ -9,8 +9,8 @@ Nassy
 #Requirement
 
 ##server
-*pyaudio
-*scipy
+* pyaudio
+* scipy
 
 ##ios
-*cocoapod
+* cocoapod
