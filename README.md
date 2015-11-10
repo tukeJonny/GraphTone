@@ -11,6 +11,7 @@ Nassy
 ##server
 * pyaudio
 * scipy
+* cython
 
 ##ios
 * cocoapod
