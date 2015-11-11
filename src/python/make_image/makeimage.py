@@ -10,3 +10,4 @@ def makePng(exp, xPosArray, yPosArray):
     plt.grid()
     plt.plot(xPosArray, yPosArray)
     plt.savefig('output.png', format='png', dpi=300)
+    plt.clf()
