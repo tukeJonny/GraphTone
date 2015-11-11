@@ -25,13 +25,9 @@ import os
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from SocketServer import ThreadingMixIn
 #make image
-from matplotlib import*
-import matplotlib.pyplot as plt
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
-#make sound
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))) )
+from make_image import *
+#make sound
 from make_sound import *
 from numerical_formula import *
 
@@ -68,30 +64,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def make_sound(self):
         print "make sound..."
-        xPosArray, yPosArray = parseExpression.getCoordinate(self.exp, int(self.beg), int(self.end))
-        print "x = " + str(xPosArray)
-        print "y = " + str(yPosArray)
-        gensound.genSound(yPosArray)
+        self.xPosArray, self.yPosArray = parseExpression.getCoordinate(self.exp, int(self.beg), int(self.end))
+        print "x = " + str(self.xPosArray)
+        print "y = " + str(self.yPosArray)
+        gensound.genSound(self.yPosArray)
 
     def make_image(self):
         print "make image..."
-        ext_modules = [
-            Extension( "makeimage", ["makeimage.pyx"] ),
-            #Extension( "parseExpression", ["parseExpression.pyx"])
-        ]
-
-        setup(
-            name = "make image",
-            cmdclass = { "build_ext" : build_ext },
-            ext_modules = ext_modules,
-        )
-        
-        plt.title(self.exp)
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.grid()
-        plt.plot(self.xPosArray, self.yPosArray, 'o')
-        plt.savefig('output.png', format='png', dpi=300)
+        makeimage.makePng(self.exp, self.xPosArray, self.yPosArray)
 
     def make_response(self):
         print "making response..."
@@ -110,7 +90,7 @@ class Handler(BaseHTTPRequestHandler):
     def zip(self):
         print "make zip file..."
         zipFile = zipfile.ZipFile("./send.zip","w",zipfile.ZIP_DEFLATED)
-        zipFile.write("./image.png")
+        zipFile.write("./output.png")
         zipFile.write("./output.mp3")
         zipFile.close()
 
@@ -134,7 +114,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.zip()
         self.read_file()
-        #self.wfile.write(self.message)
+        self.wfile.write(self.message)
         print "All Done"
         return 
 
