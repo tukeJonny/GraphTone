@@ -8,5 +8,5 @@ def makePng(exp, xPosArray, yPosArray):
     plt.xlabel('x')
     plt.ylabel('y')
     plt.grid()
-    plt.plot(xPosArray, yPosArray, 'o')
+    plt.plot(xPosArray, yPosArray)
     plt.savefig('output.png', format='png', dpi=300)
