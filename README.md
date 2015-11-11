@@ -9,7 +9,7 @@ Nassy
 #Requirement
 
 ##server
-* pyaudio
+* pyaudio(need 'brew install portaudio' if you use OSX)
 * scipy
 * cython
 
