@@ -12,6 +12,7 @@ Nassy
 * pyaudio(need `brew install portaudio` if you use OSX)
 * scipy
 * cython
+* ffmpeg
 
 ##ios
 * cocoapod
