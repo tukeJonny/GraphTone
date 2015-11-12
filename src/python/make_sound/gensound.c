@@ -1042,13 +1042,13 @@ static PyObject *__pyx_pf_8gensound_4Tone___init__(CYTHON_UNUSED PyObject *__pyx
 static PyObject *__pyx_pf_8gensound_4Tone_2get_value(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_tick); /* proto */
 static PyObject *__pyx_pf_8gensound_4Tone_4get_frequency(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8gensound_4Tone_6set_frequency(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray); /* proto */
+static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray, PyObject *__pyx_v_tempo, PyObject *__pyx_v_volume); /* proto */
 static PyObject *__pyx_pf_8gensound_5convertWavToMp3(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_8gensound_7plot_waveform(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_waveform, PyObject *__pyx_v_sampling_rate); /* proto */
 static PyObject *__pyx_pf_8gensound_9analyzeWav(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_y); /* proto */
 static PyObject *__pyx_pf_8gensound_11analyzeYPos(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_8gensound_13genSound(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray); /* proto */
+static PyObject *__pyx_pf_8gensound_13genSound(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray, PyObject *__pyx_v_tempo, PyObject *__pyx_v_volume); /* proto */
 static PyObject *__pyx_tp_new_8gensound___pyx_scope_struct__drange(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_float_1_0;
 static PyObject *__pyx_float_32768_0;
@@ -2024,26 +2024,83 @@ static PyObject *__pyx_pf_8gensound_4Tone_6set_frequency(CYTHON_UNUSED PyObject 
 /* "gensound.pyx":104
  * 
  * #Wav
- * def generateWavFile(yPosArray):             # <<<<<<<<<<<<<<
+ * def generateWavFile(yPosArray, tempo, volume):             # <<<<<<<<<<<<<<
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8gensound_4generateWavFile(PyObject *__pyx_self, PyObject *__pyx_v_yPosArray); /*proto*/
-static PyMethodDef __pyx_mdef_8gensound_4generateWavFile = {"generateWavFile", (PyCFunction)__pyx_pw_8gensound_4generateWavFile, METH_O, 0};
-static PyObject *__pyx_pw_8gensound_4generateWavFile(PyObject *__pyx_self, PyObject *__pyx_v_yPosArray) {
+static PyObject *__pyx_pw_8gensound_4generateWavFile(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_8gensound_4generateWavFile = {"generateWavFile", (PyCFunction)__pyx_pw_8gensound_4generateWavFile, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_8gensound_4generateWavFile(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_yPosArray = 0;
+  PyObject *__pyx_v_tempo = 0;
+  PyObject *__pyx_v_volume = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("generateWavFile (wrapper)", 0);
-  __pyx_r = __pyx_pf_8gensound_3generateWavFile(__pyx_self, ((PyObject *)__pyx_v_yPosArray));
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_yPosArray,&__pyx_n_s_tempo,&__pyx_n_s_volume,0};
+    PyObject* values[3] = {0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_yPosArray)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_tempo)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("generateWavFile", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_volume)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("generateWavFile", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "generateWavFile") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+    }
+    __pyx_v_yPosArray = values[0];
+    __pyx_v_tempo = values[1];
+    __pyx_v_volume = values[2];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("generateWavFile", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("gensound.generateWavFile", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_8gensound_3generateWavFile(__pyx_self, __pyx_v_yPosArray, __pyx_v_tempo, __pyx_v_volume);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray) {
+static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray, PyObject *__pyx_v_tempo, PyObject *__pyx_v_volume) {
   PyObject *__pyx_v_yPosMin = NULL;
   PyObject *__pyx_v_my_compiler = NULL;
   PyObject *__pyx_v_sequencer = NULL;
@@ -2066,9 +2123,9 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
 
   /* "gensound.pyx":105
  * #Wav
- * def generateWavFile(yPosArray):
+ * def generateWavFile(yPosArray, tempo, volume):
  *     yPosMin = min(yPosArray)             # <<<<<<<<<<<<<<
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  *     sequencer = Sequencer()
  */
   __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -2083,9 +2140,9 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
   __pyx_t_2 = 0;
 
   /* "gensound.pyx":106
- * def generateWavFile(yPosArray):
+ * def generateWavFile(yPosArray, tempo, volume):
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)             # <<<<<<<<<<<<<<
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)             # <<<<<<<<<<<<<<
  *     sequencer = Sequencer()
  *     tone1 = Tone()
  */
@@ -2098,8 +2155,8 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_yPosMin);
   __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_tempo, __pyx_int_1500) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_volume, __pyx_int_10) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_tempo, __pyx_v_tempo) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_volume, __pyx_v_volume) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2110,7 +2167,7 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
 
   /* "gensound.pyx":107
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  *     sequencer = Sequencer()             # <<<<<<<<<<<<<<
  *     tone1 = Tone()
  *     sequencer.add_track(0, "manual", tone1, tone1)
@@ -2139,7 +2196,7 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
   __pyx_t_4 = 0;
 
   /* "gensound.pyx":108
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  *     sequencer = Sequencer()
  *     tone1 = Tone()             # <<<<<<<<<<<<<<
  *     sequencer.add_track(0, "manual", tone1, tone1)
@@ -2392,9 +2449,9 @@ static PyObject *__pyx_pf_8gensound_3generateWavFile(CYTHON_UNUSED PyObject *__p
   /* "gensound.pyx":104
  * 
  * #Wav
- * def generateWavFile(yPosArray):             # <<<<<<<<<<<<<<
+ * def generateWavFile(yPosArray, tempo, volume):             # <<<<<<<<<<<<<<
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  */
 
   /* function exit code */
@@ -3388,26 +3445,87 @@ static PyObject *__pyx_pf_8gensound_11analyzeYPos(CYTHON_UNUSED PyObject *__pyx_
 /* "gensound.pyx":149
  * ##################################### Debug #####################################
  * 
- * def genSound(yPosArray):             # <<<<<<<<<<<<<<
- *     generateWavFile(yPosArray)
+ * def genSound(yPosArray, tempo=1500, volume=10):             # <<<<<<<<<<<<<<
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)
  *     convertWavToMp3()
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8gensound_14genSound(PyObject *__pyx_self, PyObject *__pyx_v_yPosArray); /*proto*/
-static PyMethodDef __pyx_mdef_8gensound_14genSound = {"genSound", (PyCFunction)__pyx_pw_8gensound_14genSound, METH_O, 0};
-static PyObject *__pyx_pw_8gensound_14genSound(PyObject *__pyx_self, PyObject *__pyx_v_yPosArray) {
+static PyObject *__pyx_pw_8gensound_14genSound(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_8gensound_14genSound = {"genSound", (PyCFunction)__pyx_pw_8gensound_14genSound, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_8gensound_14genSound(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_yPosArray = 0;
+  PyObject *__pyx_v_tempo = 0;
+  PyObject *__pyx_v_volume = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("genSound (wrapper)", 0);
-  __pyx_r = __pyx_pf_8gensound_13genSound(__pyx_self, ((PyObject *)__pyx_v_yPosArray));
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_yPosArray,&__pyx_n_s_tempo,&__pyx_n_s_volume,0};
+    PyObject* values[3] = {0,0,0};
+    values[1] = ((PyObject *)__pyx_int_1500);
+    values[2] = ((PyObject *)__pyx_int_10);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_yPosArray)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_tempo);
+          if (value) { values[1] = value; kw_args--; }
+        }
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_volume);
+          if (value) { values[2] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "genSound") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_yPosArray = values[0];
+    __pyx_v_tempo = values[1];
+    __pyx_v_volume = values[2];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("genSound", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("gensound.genSound", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_8gensound_13genSound(__pyx_self, __pyx_v_yPosArray, __pyx_v_tempo, __pyx_v_volume);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8gensound_13genSound(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray) {
+static PyObject *__pyx_pf_8gensound_13genSound(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_yPosArray, PyObject *__pyx_v_tempo, PyObject *__pyx_v_volume) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3421,74 +3539,63 @@ static PyObject *__pyx_pf_8gensound_13genSound(CYTHON_UNUSED PyObject *__pyx_sel
 
   /* "gensound.pyx":150
  * 
- * def genSound(yPosArray):
- *     generateWavFile(yPosArray)             # <<<<<<<<<<<<<<
+ * def genSound(yPosArray, tempo=1500, volume=10):
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)             # <<<<<<<<<<<<<<
  *     convertWavToMp3()
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_generateWavFile); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_generateWavFile); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_yPosArray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
-    __Pyx_INCREF(__pyx_v_yPosArray);
-    __Pyx_GIVEREF(__pyx_v_yPosArray);
-    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_yPosArray);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_INCREF(__pyx_v_yPosArray);
+  __Pyx_GIVEREF(__pyx_v_yPosArray);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_yPosArray);
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_tempo, __pyx_v_tempo) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_volume, __pyx_v_volume) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "gensound.pyx":151
- * def genSound(yPosArray):
- *     generateWavFile(yPosArray)
+ * def genSound(yPosArray, tempo=1500, volume=10):
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)
  *     convertWavToMp3()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_convertWavToMp3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_4);
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_convertWavToMp3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  if (__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__pyx_t_2) {
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "gensound.pyx":149
  * ##################################### Debug #####################################
  * 
- * def genSound(yPosArray):             # <<<<<<<<<<<<<<
- *     generateWavFile(yPosArray)
+ * def genSound(yPosArray, tempo=1500, volume=10):             # <<<<<<<<<<<<<<
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)
  *     convertWavToMp3()
  */
 
@@ -4227,14 +4334,14 @@ static int __Pyx_InitCachedConstants(void) {
   /* "gensound.pyx":104
  * 
  * #Wav
- * def generateWavFile(yPosArray):             # <<<<<<<<<<<<<<
+ * def generateWavFile(yPosArray, tempo, volume):             # <<<<<<<<<<<<<<
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  */
-  __pyx_tuple__21 = PyTuple_Pack(9, __pyx_n_s_yPosArray, __pyx_n_s_yPosMin, __pyx_n_s_my_compiler, __pyx_n_s_sequencer, __pyx_n_s_tone1, __pyx_n_s_sequence, __pyx_n_s_sink, __pyx_n_s_clock, __pyx_n_s_renderer); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__21 = PyTuple_Pack(11, __pyx_n_s_yPosArray, __pyx_n_s_tempo, __pyx_n_s_volume, __pyx_n_s_yPosMin, __pyx_n_s_my_compiler, __pyx_n_s_sequencer, __pyx_n_s_tone1, __pyx_n_s_sequence, __pyx_n_s_sink, __pyx_n_s_clock, __pyx_n_s_renderer); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(1, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ne250143_github_GraphTone, __pyx_n_s_generateWavFile, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(3, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ne250143_github_GraphTone, __pyx_n_s_generateWavFile, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "gensound.pyx":119
  * 
@@ -4284,14 +4391,14 @@ static int __Pyx_InitCachedConstants(void) {
   /* "gensound.pyx":149
  * ##################################### Debug #####################################
  * 
- * def genSound(yPosArray):             # <<<<<<<<<<<<<<
- *     generateWavFile(yPosArray)
+ * def genSound(yPosArray, tempo=1500, volume=10):             # <<<<<<<<<<<<<<
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)
  *     convertWavToMp3()
  */
-  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_n_s_yPosArray); if (unlikely(!__pyx_tuple__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_yPosArray, __pyx_n_s_tempo, __pyx_n_s_volume); if (unlikely(!__pyx_tuple__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ne250143_github_GraphTone, __pyx_n_s_genSound, 149, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ne250143_github_GraphTone, __pyx_n_s_genSound, 149, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5065,9 +5172,9 @@ PyMODINIT_FUNC PyInit_gensound(void)
   /* "gensound.pyx":104
  * 
  * #Wav
- * def generateWavFile(yPosArray):             # <<<<<<<<<<<<<<
+ * def generateWavFile(yPosArray, tempo, volume):             # <<<<<<<<<<<<<<
  *     yPosMin = min(yPosArray)
- *     my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+ *     my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8gensound_4generateWavFile, NULL, __pyx_n_s_gensound); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -5125,8 +5232,8 @@ PyMODINIT_FUNC PyInit_gensound(void)
   /* "gensound.pyx":149
  * ##################################### Debug #####################################
  * 
- * def genSound(yPosArray):             # <<<<<<<<<<<<<<
- *     generateWavFile(yPosArray)
+ * def genSound(yPosArray, tempo=1500, volume=10):             # <<<<<<<<<<<<<<
+ *     generateWavFile(yPosArray, tempo=tempo, volume=volume)
  *     convertWavToMp3()
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8gensound_14genSound, NULL, __pyx_n_s_gensound); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}

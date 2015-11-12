@@ -101,9 +101,9 @@ class Tone(object):
     frequency = property(get_frequency, set_frequency)
 
 #Wavファイルの生成
-def generateWavFile(yPosArray):
+def generateWavFile(yPosArray, tempo, volume):
     yPosMin = min(yPosArray)
-    my_compiler = MyCompiler(yPosMin, tempo=1500, volume=10)
+    my_compiler = MyCompiler(yPosMin, tempo=tempo, volume=volume)
     sequencer = Sequencer()
     tone1 = Tone()
     sequencer.add_track(0, "manual", tone1, tone1)
@@ -146,8 +146,8 @@ def analyzeYPos():
     plt.savefig('graph.png')
 ##################################### Debug #####################################
 
-def genSound(yPosArray):
-    generateWavFile(yPosArray)
+def genSound(yPosArray, tempo=1500, volume=10):
+    generateWavFile(yPosArray, tempo=tempo, volume=volume)
     convertWavToMp3()
 
 
