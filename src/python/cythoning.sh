@@ -3,7 +3,7 @@
 directories=("make_sound" "numerical_formula" "make_image")
 files=("gensound" "parseExpression" "makeimage")
 
-for r in {0..2}; do
+for (( r = 0; r < $((${#files[@]})); r++ )); do
 	echo "cythoning ${directories[$r]} process..."
 	cd ${directories[$r]}
 	cp ${files[$r]}.py ${files[$r]}.pyx
