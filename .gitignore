@@ -3,3 +3,4 @@ output.*
 *.bkup
 *.png
 oldGenMMLCommandsString.py
+*.zip
