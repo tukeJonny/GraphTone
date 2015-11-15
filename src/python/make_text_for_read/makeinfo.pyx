@@ -8,29 +8,35 @@
 
 from sympy import*
 import re
+import sys
+sys.path.append('../numerical_formula')
+from parseExpression import*
+import matplotlib.pyplot  as plt
+
 
 class SAYINFO():
 	def __init__(self, expression, xPosArray, yPosArray):
 		#式定義
 		self.exp = sympify(expression)
-		x = Symbol('x')
+		self.x = Symbol('x')
 		#微分
-		self.df = diff(self.exp, x)
+		self.df = diff(self.exp, self.x)
 		#x軸との交点
 		self.intersect = solve(Eq(self.df, 0))
+		print "intersect has calculated now: " + str(self.intersect)
 
-		self.quad = calcQuadrant()
-		self.updown = calcUpDown()
-		self.intercept = calcIntercept()
-		self.extremum = calcExtremum()
-		self.function = classifyFunction()
+		self.quad = self.calcQuadrant(xPosArray, yPosArray)
+		self.updown = self.calcUpDown(yPosArray[0], yPosArray[1])
+		self.intercept = self.calcIntercept(expression)
+		self.extremum = self.calcExtremum(expression)
+		self.function = self.classifyFunction(expression)
 
 	#何象限に属すか
 	def calcQuadrant(self, xPosArray, yPosArray):
-		quadrant = (False, False, False, False)
+		quadrant = [False, False, False, False]
 		for r in range(len(xPosArray)):
-			x = xPosArray[0]
-			y = yPosArray[0]
+			x = xPosArray[r]
+			y = yPosArray[r]
 			if x > 0 and y > 0:
 				quadrant[0] = True
 			elif x < 0 and y > 0:
@@ -49,20 +55,22 @@ class SAYINFO():
 		diffy = y2-y1
 		#最初、増えているか、減っているか
 		Dir.append(-1 if diffy < 0 else 1)
-		#expressionを微分した式のx軸との交点を求める
-		for r in range(1, len(self.intersect)+1):
-			Dir.append(Dir[0]*((-1)**r))
+		#極値を持たないなら、増減の変化が起き得ない
+		#また、導関数=0の解が得られないなら増減が起きないことがわかる
+		if self.hasExtremum() and self.intersect is not False:
+			#expressionを微分した式のx軸との交点で
+			for r in range(1, len(self.intersect)+1):
+				Dir.append(Dir[0]*((-1)**r))
 		return Dir
 
 	#x, y切片
 	def calcIntercept(self, express):
 		expression = sympify(express)
-		x = Symbol('x')
 		#x切片
-		xI = expression.subs([(x, 0)])
+		xI = solve(Eq(expression, 0))
 		#eval(exp.replace('x', 0))
 		#y切片
-		yI = solve(Eq(expression, 0))
+		yI = expression.subs([(self.x, 0)])
 		return (xI, yI)
 
 	#極値判定
@@ -72,18 +80,22 @@ class SAYINFO():
 	#正である場合は極小値を持つ
 	# => f''(a) = 0となってしまった場合、極値を持たないこととなる
 	def hasExtremum(self):
+		#微分した式 = 0が解けない場合、極値を持たない
+		if not self.intersect:
+			return False
 		#２階導関数を求める
-		ddf = diff(self.df, x)
+		ddf = diff(self.df, self.x)
 		for r in self.intersect:
 			#２階導関数に導関数のx軸との交点のx座標値を代入し、その値が0にならないか調べる
-			if ddf.subs([(x, r)]) is 0:
+			if ddf.subs([(self.x, r)]) == 0:
 				return False #0であれば、極値を持たない
 		return True
 
 	#極値
 	def calcExtremum(self, express):
-		if hasExtremum():
-			extremum = [express.subs([(x, r)]) for r in self.intersect]
+		express = sympify(express)
+		if self.hasExtremum() and self.intersect is not False:
+			extremum = [express.subs([(self.x, r)]) for r in self.intersect]
 			#eval(exp.replace('x', r))
 			return extremum
 		else:
@@ -91,6 +103,7 @@ class SAYINFO():
 
 	#関数分類
 	def classifyFunction(self, express):
+		express = str(sympify(express))
 		ThreeFunc = re.compile(r'x\*\*3')
 		TwoFunc = re.compile(r'x\*\*2')
 		LogFunc = re.compile(r'log\(.*x.*\)')
@@ -99,29 +112,57 @@ class SAYINFO():
 		OneFunc = re.compile(r'x')
 
 		if ThreeFunc.search(express):
-			return u"３次関数"
+			return "３次関数"
 		elif TwoFunc.search(express):
-			return u"２次関数"
+			return "２次関数"
 		elif LogFunc.search(express):
-			return u"対数関数"
+			return "対数関数"
 		elif TriFunc.search(express):
-			return u"三角関数"
+			return "三角関数"
 		elif ExpoFunc.search(express):
-			return u"指数関数"
+			return "指数関数"
 		elif OneFunc.search(express):
-			return u"１次関数"
+			return "１次関数"
 		return None
+
+	def getQuad(self):
+		return self.quad
+
+	def getUpDown(self):
+		return self.updown
+
+	def getIntercept(self):
+		return self.intercept
+
+	def getExtremum(self):
+		return self.extremum
+
+	def getFunction(self):
+		return self.function
 
 	def getSayStr():
 		text = ""
 		return text
 
 def main():
-	express = "((x)**(2))"
+	express = convertExpression(raw_input("Please input expression: "))
 	xPosArray = [x for x in range(-5, 6)]
-	yPosArray = [eval(express.replace('x', str(x))) for x in range(-5, 6)]
-	sayinfo = SAYINFO()
-	text = sayinfo.getSayStr()
+	yPosArray = [eval(express.replace('x', "(" + str(x) + ")")) for x in range(-5, 6)]
+	sayinfo = SAYINFO(express, xPosArray, yPosArray)
+	#text = sayinfo.getSayStr(express, xPosArray, yPosArray)
+	print "Generated Arrays..."
+	print "xPos = " + str(xPosArray)
+	print "yPos = " + str(yPosArray)
+	print ""
+	print "象限: " + str(sayinfo.getQuad())
+	print "増減: " + str(sayinfo.getUpDown())
+	intercept = sayinfo.getIntercept()
+	print "x切片 = " + str(intercept[0]) + "\ny切片 = " + str(intercept[1])
+	print "極値: " + str(sayinfo.getExtremum()) if sayinfo.hasExtremum() else "持たない"
+	print "これは、" + sayinfo.getFunction() + "です。"
+	plt.grid()
+	plt.plot(xPosArray, yPosArray)
+	plt.show()
 
 
 if __name__ == '__main__':
