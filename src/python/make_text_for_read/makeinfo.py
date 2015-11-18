@@ -13,11 +13,17 @@ sys.path.append('../numerical_formula')
 from parseExpression import*
 import matplotlib.pyplot  as plt
 
+#式によっては、計算後の解が値ではなく式で表されることがある
+#これでは、ユーザが混乱するため、敢えて小数点精度を落とすことである程度判りやすくする。
+#現時点で、複素数が残ってしまう問題がまだある
+fpPrecise = 10
+xyrange = 1000
 
 class SAYINFO():
 	def __init__(self, expression, xPosArray, yPosArray):
+		self.noradian_str = lambda expression: re.sub(r'radians(\(.*\))', r'\1', expression)
 		#式定義
-		self.exp = sympify(expression)
+		self.exp = sympify(self.noradian_str(expression))
 		self.x = Symbol('x')
 		#微分
 		self.df = diff(self.exp, self.x)
@@ -50,6 +56,7 @@ class SAYINFO():
 	#増減
 	#1  ... 増加
 	#-1 ... 減少
+	#微分して判断しているため、実際の上下の数と異なっている問題あり
 	def calcUpDown(self, y1, y2):
 		Dir = []
 		diffy = y2-y1
@@ -65,7 +72,7 @@ class SAYINFO():
 
 	#x, y切片
 	def calcIntercept(self, express):
-		expression = sympify(express)
+		expression = sympify(self.noradian_str(express))
 		#x切片
 		xI = solve(Eq(expression, 0))
 		#eval(exp.replace('x', 0))
@@ -93,7 +100,7 @@ class SAYINFO():
 
 	#極値
 	def calcExtremum(self, express):
-		express = sympify(express)
+		express = sympify(self.noradian_str(express))
 		if self.hasExtremum() and self.intersect is not False:
 			extremum = [express.subs([(self.x, r)]) for r in self.intersect]
 			#eval(exp.replace('x', r))
@@ -103,7 +110,7 @@ class SAYINFO():
 
 	#関数分類
 	def classifyFunction(self, express):
-		express = str(sympify(express))
+		express = str(sympify(self.noradian_str(express)))
 		ThreeFunc = re.compile(r'x\*\*3')
 		TwoFunc = re.compile(r'x\*\*2')
 		LogFunc = re.compile(r'log\(.*x.*\)')
@@ -145,9 +152,12 @@ class SAYINFO():
 		return text
 
 def main():
+	global fpPrecise
+	global xyrange
+
 	express = convertExpression(raw_input("Please input expression: "))
-	xPosArray = [x for x in range(-5, 6)]
-	yPosArray = [eval(express.replace('x', "(" + str(x) + ")")) for x in range(-5, 6)]
+	xPosArray = [x for x in range(-xyrange, xyrange+1)]
+	yPosArray = [eval(express.replace('x', "(" + str(x) + ")")) for x in range(-xyrange, xyrange+1)]
 	sayinfo = SAYINFO(express, xPosArray, yPosArray)
 	#text = sayinfo.getSayStr(express, xPosArray, yPosArray)
 	print "Generated Arrays..."
