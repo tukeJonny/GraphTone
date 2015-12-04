@@ -69,9 +69,14 @@ def drange(begin, end, step):
     while n <= end+step:
         yield n
         n += step
+xyrange = 100
+formula = lambda x: x**3
+#xPosArray = [x for x in drange(-float(xyrange), float(xyrange), 0.1)]
+#yPosArray = [formula(x) for x in drange(-float(xyrange), float(xyrange), 0.1)]
 
-#xPosArray = [x for x in drange(-10.0, 10.0, 0.1)]
-#yPosArray = [2**x for x in drange(-10.0, 10.0, 0.1)]
+xPosArray = [x for x in drange(-float(xyrange), float(xyrange), 0.1)]
+yPosArray = [formula(x) for x in drange(-float(xyrange), float(xyrange), 0.1)]
+
 
 #Toneクラス
 class Tone(object):
@@ -150,10 +155,14 @@ def genSound(yPosArray, tempo=1500, volume=10):
     generateWavFile(yPosArray, tempo=tempo, volume=volume)
     convertWavToMp3()
 
+def main():
+    print "xPosArray = " + str(xPosArray)
+    print "yPosArray = " + str(yPosArray)
+    genSound(yPosArray)
 
 
-
-
+if __name__ == "__main__":
+    main()
 
 
 
