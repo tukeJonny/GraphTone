@@ -11,6 +11,7 @@ import re
 import sys
 sys.path.append('../numerical_formula')
 from parseExpression import*
+from math import*
 import matplotlib.pyplot  as plt
 
 #式によっては、計算後の解が値ではなく式で表されることがある
@@ -19,11 +20,14 @@ import matplotlib.pyplot  as plt
 fpPrecise = 10
 xyrange = 1000
 
+radianize = lambda val: val / 180.0 * pi
+
 class SAYINFO():
 	def __init__(self, expression, xPosArray, yPosArray):
-		self.noradian_str = lambda expression: re.sub(r'radians(\(.*\))', r'\1', expression)
+		#self.noradian_str = lambda expression: re.sub(r'radians(\(.*\))', r'\1', expression)
 		#式定義
-		self.exp = sympify(self.noradian_str(expression))
+		self.expression = expression
+		self.exp = sympify(expression)
 		self.x = Symbol('x')
 		#微分
 		self.df = diff(self.exp, self.x)
@@ -72,12 +76,16 @@ class SAYINFO():
 
 	#x, y切片
 	def calcIntercept(self, express):
-		expression = sympify(self.noradian_str(express))
+		#expression = sympify(self.noradian_str(express))
+		expression = sympify(express)
 		#x切片
 		xI = solve(Eq(expression, 0))
 		#eval(exp.replace('x', 0))
 		#y切片
-		yI = expression.subs([(self.x, 0)])
+		val = 0
+		#if(self.classifyFunction(express) == "三角関数"):
+		#		val = radianize(val)
+		yI = expression.subs([(self.x, val)])
 		return (xI, yI)
 
 	#極値判定
@@ -93,16 +101,26 @@ class SAYINFO():
 		#２階導関数を求める
 		ddf = diff(self.df, self.x)
 		for r in self.intersect:
+			val = r
+			if(self.classifyFunction(self.expression) == "三角関数"):
+				val = radianize(r)
 			#２階導関数に導関数のx軸との交点のx座標値を代入し、その値が0にならないか調べる
-			if ddf.subs([(self.x, r)]) == 0:
+			if ddf.subs([(self.x, val)]) == 0:
 				return False #0であれば、極値を持たない
 		return True
 
 	#極値
 	def calcExtremum(self, express):
-		express = sympify(self.noradian_str(express))
+		#express = sympify(self.noradian_str(express))
+		express = sympify(express)
 		if self.hasExtremum() and self.intersect is not False:
-			extremum = [express.subs([(self.x, r)]) for r in self.intersect]
+			extremum = []
+			#[express.subs([(self.x, r)]) for r in self.intersect]
+			for r in self.intersect:
+				val = r
+				if self.classifyFunction(express) == "三角関数":
+					val = radianize(r)
+				extremum.append(express.subs([(self.x, val)]))
 			#eval(exp.replace('x', r))
 			return extremum
 		else:
@@ -110,7 +128,8 @@ class SAYINFO():
 
 	#関数分類
 	def classifyFunction(self, express):
-		express = str(sympify(self.noradian_str(express)))
+		#express = str(sympify(self.noradian_str(express)))
+		express = str(sympify(express))
 		ThreeFunc = re.compile(r'x\*\*3')
 		TwoFunc = re.compile(r'x\*\*2')
 		LogFunc = re.compile(r'log\(.*x.*\)')
@@ -147,8 +166,36 @@ class SAYINFO():
 	def getFunction(self):
 		return self.function
 
-	def getSayStr():
+	def getSayStr(self):
 		text = ""
+		#********** 関数種別 **********
+		text += "このグラフは%sです。" % self.getFunction()
+		#********** 式 **********
+		text += "このグラフの式は%sです。" % str(self.exp)
+		#********** 象限 **********
+		quad = self.getQuad()
+		for idx, b in enumerate(quad):
+			if b == True:
+				text += "第%d"%(idx+1)
+		text += "象限を通ります。"
+		#********** 増減 **********
+		text += "このグラフは"
+		for ud in self.getUpDown():
+			if ud >= 0:
+				text += "上がって"
+			else:
+				text += "下がって"
+		text += "いきます。"
+		#********** 切片 **********
+		intercept = self.getIntercept()
+		text += "x切片は%sy切片は%dです。"%(str(intercept[0]), intercept[1])
+		#********** 極値 **********
+		#text += "極値: " + str(self.getExtremum()) if self.hasExtremum() else "持たない"
+		if self.hasExtremum():
+			text += "極ちは%sです。" % str(self.getExtremum()).replace('[', '').replace(']', '')
+		else:
+			text += "極ちはありません。"
+
 		return text
 
 def main():
@@ -160,6 +207,7 @@ def main():
 	yPosArray = [eval(express.replace('x', "(" + str(x) + ")")) for x in range(-xyrange, xyrange+1)]
 	sayinfo = SAYINFO(express, xPosArray, yPosArray)
 	#text = sayinfo.getSayStr(express, xPosArray, yPosArray)
+	"""
 	print "Generated Arrays..."
 	print "xPos = " + str(xPosArray)
 	print "yPos = " + str(yPosArray)
@@ -170,6 +218,8 @@ def main():
 	print "x切片 = " + str(intercept[0]) + "\ny切片 = " + str(intercept[1])
 	print "極値: " + str(sayinfo.getExtremum()) if sayinfo.hasExtremum() else "持たない"
 	print "これは、" + sayinfo.getFunction() + "です。"
+	"""
+	print sayinfo.getSayStr()
 	plt.grid()
 	plt.plot(xPosArray, yPosArray)
 	plt.show()
