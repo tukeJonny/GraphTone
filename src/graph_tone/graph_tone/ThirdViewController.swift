@@ -46,7 +46,7 @@ class ThirdViewController: UIViewController {
         let ret = SSZipArchive.unzipFileAtPath(zipPath, toDestination: destPath)
         if (ret) {
             // 処理が成功した場合
-            println("解凍成功")
+            print("解凍成功")
         }
         
         /* let destDirPath = "/Users/ne250114/Desktop"

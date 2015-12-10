@@ -18,7 +18,7 @@
 		5118BA6A1BC4C099001B835A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA691BC4C099001B835A /* SecondViewController.swift */; };
 		5118BA6C1BC4C0B3001B835A /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */; };
 		5118BA701BC4C179001B835A /* hoge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6F1BC4C179001B835A /* hoge.m */; };
-		CA588AF71BD096E9002CDFBF /* root.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CA588AF61BD096E9002CDFBF /* root.mp3 */; };
+		51C8CC1F1BFEFCDD00D6D45B /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,8 +50,8 @@
 		5118BA6D1BC4C178001B835A /* graph_tone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "graph_tone-Bridging-Header.h"; sourceTree = "<group>"; };
 		5118BA6E1BC4C179001B835A /* hoge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hoge.h; sourceTree = "<group>"; };
 		5118BA6F1BC4C179001B835A /* hoge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hoge.m; sourceTree = "<group>"; };
+		51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		7E56B0D9F099C26F3097C2DE /* libPods-graph_tone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-graph_tone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA588AF61BD096E9002CDFBF /* root.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = root.mp3; path = ../../../../../Music/root.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,12 +96,12 @@
 		5118BA441BC4C038001B835A /* graph_tone */ = {
 			isa = PBXGroup;
 			children = (
-				CA588AF61BD096E9002CDFBF /* root.mp3 */,
 				5118BA471BC4C038001B835A /* AppDelegate.swift */,
 				5118BA671BC4C084001B835A /* FirstViewController.swift */,
 				5118BA691BC4C099001B835A /* SecondViewController.swift */,
 				5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */,
 				5118BA491BC4C038001B835A /* ViewController.swift */,
+				51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */,
 				5118BA4B1BC4C038001B835A /* Main.storyboard */,
 				5118BA4E1BC4C038001B835A /* Images.xcassets */,
 				5118BA501BC4C038001B835A /* LaunchScreen.xib */,
@@ -167,7 +167,8 @@
 				5118BA3F1BC4C038001B835A /* Frameworks */,
 				5118BA401BC4C038001B835A /* Resources */,
 				2E1EF307237A0EF33F822B64 /* Copy Pods Resources */,
-				ECD9D01872DE982C4616A439 /* Embed Pods Frameworks */,
+				5136B3851BD9D8AD00A8CB76 /* ShellScript */,
+				5136B3861BD9D8D700A8CB76 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -202,11 +203,14 @@
 		5118BA3A1BC4C038001B835A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "takanashi tomoyuki";
 				TargetAttributes = {
 					5118BA411BC4C038001B835A = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = CL73D4FKF2;
 					};
 					5118BA561BC4C038001B835A = {
 						CreatedOnToolsVersion = 6.4;
@@ -240,7 +244,6 @@
 			files = (
 				5118BA4D1BC4C038001B835A /* Main.storyboard in Resources */,
 				5118BA521BC4C038001B835A /* LaunchScreen.xib in Resources */,
-				CA588AF71BD096E9002CDFBF /* root.mp3 in Resources */,
 				5118BA4F1BC4C038001B835A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,6 +273,32 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-graph_tone/Pods-graph_tone-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5136B3851BD9D8AD00A8CB76 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"${CONFIGURATION}\" == \"Debug\" && \"${PLATFORM_NAME}\" != *simulator* ]]; then\nplist=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\nip=$(ifconfig en0 | grep \"inet[^6]\" | cut -d\" \" -f2)\n\nurl=$(/usr/libexec/PlistBuddy -c \"Print :APIBaseURL\" $plist)\nurl=$(echo $url | sed \"s|\\(http://\\)[^:/]*\\(.*\\)|\\1$ip\\2|\")\n/usr/libexec/PlistBuddy -c \"Set :APIBaseURL $url\" $plist\nfi";
+		};
+		5136B3861BD9D8D700A8CB76 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
 		D0CCA1C8F740D678C2472822 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,21 +314,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		ECD9D01872DE982C4616A439 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-graph_tone/Pods-graph_tone-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -310,6 +324,7 @@
 				5118BA6A1BC4C099001B835A /* SecondViewController.swift in Sources */,
 				5118BA681BC4C084001B835A /* FirstViewController.swift in Sources */,
 				5118BA6C1BC4C0B3001B835A /* ThirdViewController.swift in Sources */,
+				51C8CC1F1BFEFCDD00D6D45B /* InputViewController.swift in Sources */,
 				5118BA4A1BC4C038001B835A /* ViewController.swift in Sources */,
 				5118BA701BC4C179001B835A /* hoge.m in Sources */,
 				5118BA481BC4C038001B835A /* AppDelegate.swift in Sources */,
@@ -375,6 +390,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -390,7 +406,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -428,7 +444,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -439,11 +455,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 49C3F2775B3498B9243F2CE2 /* Pods-graph_tone.debug.xcconfig */;
 			buildSettings = {
+				API_HOST = "localhost:8080";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = graph_tone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "senshu-u.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "graph_tone/graph_tone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -453,11 +475,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1DF7206E05BE057BDA2C95DB /* Pods-graph_tone.release.xcconfig */;
 			buildSettings = {
+				API_HOST = example.com;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = graph_tone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "senshu-u.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "graph_tone/graph_tone-Bridging-Header.h";
 			};
 			name = Release;
@@ -476,6 +504,7 @@
 				);
 				INFOPLIST_FILE = graph_toneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "senshu-u.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/graph_tone.app/graph_tone";
 			};
@@ -491,6 +520,7 @@
 				);
 				INFOPLIST_FILE = graph_toneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "senshu-u.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/graph_tone.app/graph_tone";
 			};

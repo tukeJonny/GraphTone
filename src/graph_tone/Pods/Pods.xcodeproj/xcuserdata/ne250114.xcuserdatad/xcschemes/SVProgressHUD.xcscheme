@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35A2E61D0BD757EFA054DF71"
-               BuildableName = "libSSZipArchive.a"
-               BlueprintName = "SSZipArchive"
+               BlueprintIdentifier = "AF7E864F20CBFC0B2DE7EA57"
+               BuildableName = "libSVProgressHUD.a"
+               BlueprintName = "SVProgressHUD"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

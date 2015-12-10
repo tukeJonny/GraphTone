@@ -12,9 +12,8 @@ class FirstViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "Home"
         self.view.backgroundColor = UIColor.whiteColor()
-        
         
         // Labelを作成.
         let myLabel: UILabel = UILabel(frame: CGRectMake(0,0,200,50))
@@ -28,10 +27,9 @@ class FirstViewController: UIViewController {
         myLabel.layer.position = CGPoint(x: self.view.bounds.width/2,y: 200)
         self.view.addSubview(myLabel)
         
-        
         // ボタンを生成する.
         let inputButton: UIButton = UIButton(frame: CGRectMake(0,0,120,50))
-        inputButton.backgroundColor = UIColor.redColor();
+        inputButton.backgroundColor = UIColor.blackColor()
         // inputButton.layer.masksToBounds = true
         inputButton.setTitle("数式入力", forState: .Normal)
         // inputButton.layer.cornerRadius = 20.0
@@ -39,9 +37,9 @@ class FirstViewController: UIViewController {
         inputButton.addTarget(self, action: "onClickInputButton:", forControlEvents: .TouchUpInside)
         
         let selectButton: UIButton = UIButton(frame: CGRectMake(0,0,120,50))
-        selectButton.backgroundColor = UIColor.redColor();
+        selectButton.backgroundColor = UIColor.blackColor()
         // nextButton.layer.masksToBounds = true
-        selectButton.setTitle("画像選択", forState: .Normal)
+        selectButton.setTitle("設定", forState: .Normal)
         // selectButton.layer.cornerRadius = 20.0
         selectButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height-100)
         selectButton.addTarget(self, action: "onClickSelectButton:", forControlEvents: .TouchUpInside)
@@ -53,27 +51,17 @@ class FirstViewController: UIViewController {
     
     /* ボタンイベント */
     internal func onClickInputButton(sender: UIButton){
-        
-        // 遷移するViewを定義する.
-        let mySecondViewController: UIViewController = SecondViewController()
-        
-        // アニメーションを設定する.
-        //mySecondViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
-        
-        // Viewの移動する.
-        self.presentViewController(mySecondViewController, animated: true, completion: nil)
+        // 画面遷移
+        let inputViewController = InputViewController()
+        self.navigationController?.pushViewController(inputViewController, animated: true)
     }
     
     internal func onClickSelectButton(sender: UIButton){
         
-        // 遷移するViewを定義する.
-        let mySecondViewController: UIViewController = ThirdViewController()
-        
-        // アニメーションを設定する.
+        // 画面遷移
+        let myThirdViewController: UIViewController = SecondViewController()
         //mySecondViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
-        
-        // Viewの移動する.
-        self.presentViewController(mySecondViewController, animated: true, completion: nil)
+        self.presentViewController(myThirdViewController, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

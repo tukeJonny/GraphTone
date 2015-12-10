@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5BF146317E8F030D9FBCE819"
+               BlueprintIdentifier = "8BE2E753E08FCC98935EDB3B"
                BuildableName = "libPods-graph_tone.a"
                BlueprintName = "Pods-graph_tone"
                ReferencedContainer = "container:Pods.xcodeproj">

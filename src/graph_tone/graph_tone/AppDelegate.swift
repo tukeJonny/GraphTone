@@ -10,20 +10,19 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
-
+    private var myNavigationController: UINavigationController?
+    var hostUrl: String? = ""
+    var expVal: String? = ""
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // ViewControllerを生成する.
+        
         let myFirstViewController: FirstViewController = FirstViewController()
-        
-        // UIWindowを生成する.
+        myNavigationController = UINavigationController(rootViewController: myFirstViewController)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        // rootViewControllerにNatigationControllerを設定する.
-        self.window?.rootViewController = myFirstViewController
+        self.window?.rootViewController = myNavigationController
         self.window?.makeKeyAndVisible()
+        
         return true
     }
 
