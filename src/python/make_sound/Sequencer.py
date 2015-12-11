@@ -31,7 +31,7 @@ class MyCompiler(object):
         yPosArray = map(lambda y: y-self.yPosMin, yPosArray) #グラフのy座標の最小値を、グラフの全ての座標から引いたものを新しくyPosArrayとする
 
         for ypos in yPosArray:
-            note_frequency = (200 * ypos) + self.base #受け取ったy座標を元に、baseを基準にして周波数を求める
+            note_frequency = (ypos) + self.base #受け取ったy座標を元に、baseを基準にして周波数を求める
             sequence.append((self.attenuate, note_frequency, int(self.tick_position)))
             print  "[+] Append Frequency(y = "+str(ypos)+") = " + str(note_frequency)
             self.tick_position += self.note_on_tick

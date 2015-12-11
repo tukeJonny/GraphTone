@@ -13,6 +13,7 @@ sys.path.append('../numerical_formula')
 from parseExpression import*
 from math import*
 import matplotlib.pyplot  as plt
+import subprocess
 
 #式によっては、計算後の解が値ではなく式で表されることがある
 #これでは、ユーザが混乱するため、敢えて小数点精度を落とすことである程度判りやすくする。
@@ -219,11 +220,13 @@ def main():
 	print "極値: " + str(sayinfo.getExtremum()) if sayinfo.hasExtremum() else "持たない"
 	print "これは、" + sayinfo.getFunction() + "です。"
 	"""
-	print sayinfo.getSayStr()
+	saystr = sayinfo.getSayStr()
+	print saystr
 	plt.grid()
 	plt.plot(xPosArray, yPosArray)
 	plt.show()
-
+	subprocess.check_output("say -v Kyoko \"%s\""%saystr, shell=True)
+	
 
 if __name__ == '__main__':
 	main()
