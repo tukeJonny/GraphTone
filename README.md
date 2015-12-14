@@ -13,6 +13,10 @@ Nassy
 * scipy
 * cython
 * ffmpeg
+* matplotlib
+* numpy
+* sympy
+* pylab
 
 ##ios
 * cocoapod
