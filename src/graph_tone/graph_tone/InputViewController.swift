@@ -30,7 +30,11 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
     let speech = AVSpeechSynthesizer()
     var host1 = ""
-    let myIP = "192.168.43.223"
+    
+    // IPアドレスの設定
+    // let myIP = "192.168.43.223"
+    // let myIP = "192.168.100.102"
+    let myIP = "192.168.1.3"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +66,11 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         
         let buttonLabels = [
             "sin(","cos(","tan(","←","→",
-            "x","x^(2","x^(3","◼︎^(x","log(",
+            "x","x^(2","x^(3","^(x","log(",
             "7","8","9","(",")",
             "4","5","6","+","-",
-            "1","2","3","/","a",
-            "0",".","a","DEL","AC"
+            "1","2","3","/","",
+            "0","00",".","DEL","AC"
         ]
         
         let buttonTitles = [
@@ -74,8 +78,8 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
             "x","x2乗","x3乗","x乗","ログかっこ",
             "7","8","9","かっこはじめ","かっこ終わり",
             "4","5","6","+","マイナス",
-            "1","2","3","/","a",
-            "0","点","a","一つ戻る","すべて消す"
+            "1","2","3","/","",
+            "0","00","点","一つ戻る","すべて消す"
         ]
         
         for var y=0; y<yButtonCount; y++ {
@@ -115,8 +119,6 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
             print(host1)
             self.getData(host1)
             
-            let myViewController: UIViewController = SecondViewController()
-            self.navigationController?.pushViewController(myViewController, animated: true)
         } else {
             print("no exp")
             let utterance1 = AVSpeechUtterance(string: "式未入力です。式を入力してください。")
@@ -193,6 +195,8 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
                     compVoice.rate = 0.6
                     self.speech.speakUtterance(compVoice)
                     
+                    let myViewController: UIViewController = SecondViewController()
+                    self.navigationController?.pushViewController(myViewController, animated: true)
                 } else {
                     SVProgressHUD.showErrorWithStatus("失敗!")
                     // エラーハンドリング
@@ -200,6 +204,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
             }
         }
     }
+    
     func uriEncode(str: String) -> String {
         return str.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet())!
     }
