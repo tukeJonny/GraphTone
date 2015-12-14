@@ -98,10 +98,10 @@
 			children = (
 				5118BA471BC4C038001B835A /* AppDelegate.swift */,
 				5118BA671BC4C084001B835A /* FirstViewController.swift */,
+				51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */,
 				5118BA691BC4C099001B835A /* SecondViewController.swift */,
 				5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */,
 				5118BA491BC4C038001B835A /* ViewController.swift */,
-				51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */,
 				5118BA4B1BC4C038001B835A /* Main.storyboard */,
 				5118BA4E1BC4C038001B835A /* Images.xcassets */,
 				5118BA501BC4C038001B835A /* LaunchScreen.xib */,

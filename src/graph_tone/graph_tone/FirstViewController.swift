@@ -24,24 +24,26 @@ class FirstViewController: UIViewController {
         // myLabel.textColor = UIColor.whiteColor()
         // myLabel.shadowColor = UIColor.grayColor()
         myLabel.textAlignment = NSTextAlignment.Center
-        myLabel.layer.position = CGPoint(x: self.view.bounds.width/2,y: 200)
+        myLabel.layer.position = CGPoint(x: self.view.bounds.width/2,y:self.view.bounds.height*0.25)
         self.view.addSubview(myLabel)
         
         // ボタンを生成する.
-        let inputButton: UIButton = UIButton(frame: CGRectMake(0,0,120,50))
+        let inputButton: UIButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width*0.9,self.view.bounds.height*0.2))
         inputButton.backgroundColor = UIColor.blackColor()
         // inputButton.layer.masksToBounds = true
         inputButton.setTitle("数式入力", forState: .Normal)
         // inputButton.layer.cornerRadius = 20.0
-        inputButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height-200)
+        inputButton.titleLabel!.font = UIFont.systemFontOfSize(CGFloat(25))
+        inputButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height*0.63)
         inputButton.addTarget(self, action: "onClickInputButton:", forControlEvents: .TouchUpInside)
         
-        let selectButton: UIButton = UIButton(frame: CGRectMake(0,0,120,50))
+        let selectButton: UIButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width*0.9,self.view.bounds.height*0.2))
         selectButton.backgroundColor = UIColor.blackColor()
         // nextButton.layer.masksToBounds = true
         selectButton.setTitle("設定", forState: .Normal)
+        selectButton.titleLabel!.font = UIFont.systemFontOfSize(CGFloat(25))
         // selectButton.layer.cornerRadius = 20.0
-        selectButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height-100)
+        selectButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height*0.85)
         selectButton.addTarget(self, action: "onClickSelectButton:", forControlEvents: .TouchUpInside)
         
         // ボタンを追加する.

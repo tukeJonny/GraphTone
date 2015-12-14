@@ -25,7 +25,9 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     var count = 0
     let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
     let speech = AVSpeechSynthesizer()
-    let myIP = "192.168.43.223"
+    // let myIP = "192.168.43.223"
+    // let myIP = "192.168.100.102"
+    let myIP = "192.168.1.3"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,16 +97,16 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         myButton.layer.position = CGPoint(x: self.view.frame.width/2, y:self.view.bounds.height*0.83)
         myButton.setTitle("音声再生", forState: UIControlState.Normal)
         myButton.titleLabel!.font = UIFont.systemFontOfSize(CGFloat(25))
-        myButton.setTitleColor(UIColor.yellowColor(), forState: UIControlState.Normal)
+        myButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         myButton.backgroundColor = UIColor.blackColor()
         myButton.addTarget(self, action: "onClickMyButton:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(myButton)
         
         // backボタンを作成.
-        backButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width,40))
+        backButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width,self.view.bounds.height*0.09))
         backButton.backgroundColor = UIColor.redColor();
-        backButton.setTitle("戻る", forState: .Normal)
-        backButton.layer.position = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height-25)
+        backButton.setTitle("Home", forState: .Normal)
+        backButton.layer.position = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height*0.96)
         // backButton.addTarget(self, action: "onClickbackButton:", forControlEvents: .TouchUpInside)
         self.view.addSubview(backButton);
     }
