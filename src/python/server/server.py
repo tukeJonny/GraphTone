@@ -110,7 +110,8 @@ class Handler(BaseHTTPRequestHandler):
         print "make zip file..."
         zipFile = zipfile.ZipFile("./send.zip","w",zipfile.ZIP_DEFLATED)
         zipFile.write("./output.png")
-        zipFile.write("./output.mp3")
+        zipFile.write("./graph.mp3")
+        zipFile.write("./say.mp3")
         zipFile.close()
 
     def do_GET(self):
@@ -131,7 +132,7 @@ class Handler(BaseHTTPRequestHandler):
         #time.sleep(10)         #wait check
         self.send_response(200)
         self.end_headers()
-        self.join_mp3("say.mp3", "graph.mp3", "output.mp3")
+        #self.join_mp3("say.mp3", "graph.mp3", "output.mp3") #mp3を結合 (say.mp3 + graph.mp3 = output.mp3)
         self.zip()
         self.read_file()
         self.wfile.write(self.message)

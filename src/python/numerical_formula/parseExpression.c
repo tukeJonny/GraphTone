@@ -2404,7 +2404,7 @@ static PyObject *__pyx_pf_15parseExpression_6convertExpression(CYTHON_UNUSED PyO
  * 	if "=" in str(expression):
  * 		expression = expression.split('=')[1] #             # <<<<<<<<<<<<<<
  * 	expression = am.main(expression) #
- * 	expression = expression.replace('^', '**').replace('***', '**') #
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_expression, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
@@ -2430,7 +2430,7 @@ static PyObject *__pyx_pf_15parseExpression_6convertExpression(CYTHON_UNUSED PyO
  * 	if "=" in str(expression):
  * 		expression = expression.split('=')[1] #
  * 	expression = am.main(expression) #             # <<<<<<<<<<<<<<
- * 	expression = expression.replace('^', '**').replace('***', '**') #
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*
  * 
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_am); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -2469,7 +2469,7 @@ static PyObject *__pyx_pf_15parseExpression_6convertExpression(CYTHON_UNUSED PyO
   /* "parseExpression.pyx":104
  * 		expression = expression.split('=')[1] #
  * 	expression = am.main(expression) #
- * 	expression = expression.replace('^', '**').replace('***', '**') #             # <<<<<<<<<<<<<<
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*             # <<<<<<<<<<<<<<
  * 
  * 	converted_formula = sympify(expression) #Sympy
  */
@@ -2488,7 +2488,7 @@ static PyObject *__pyx_pf_15parseExpression_6convertExpression(CYTHON_UNUSED PyO
   __pyx_t_5 = 0;
 
   /* "parseExpression.pyx":106
- * 	expression = expression.replace('^', '**').replace('***', '**') #
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*
  * 
  * 	converted_formula = sympify(expression) #Sympy             # <<<<<<<<<<<<<<
  * 	return converted_formula
@@ -3771,7 +3771,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 	if "=" in str(expression):
  * 		expression = expression.split('=')[1] #             # <<<<<<<<<<<<<<
  * 	expression = am.main(expression) #
- * 	expression = expression.replace('^', '**').replace('***', '**') #
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*
  */
   __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s__10); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__11);
@@ -3780,7 +3780,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "parseExpression.pyx":104
  * 		expression = expression.split('=')[1] #
  * 	expression = am.main(expression) #
- * 	expression = expression.replace('^', '**').replace('***', '**') #             # <<<<<<<<<<<<<<
+ * 	expression = expression.replace('^', '**').replace('***', '**') #add_multiplication*             # <<<<<<<<<<<<<<
  * 
  * 	converted_formula = sympify(expression) #Sympy
  */

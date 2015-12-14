@@ -101,7 +101,7 @@ def convertExpression(expression):
 	if "=" in str(expression):
 		expression = expression.split('=')[1] #右辺の取り出し
 	expression = am.main(expression) #適切に乗算演算子を付加
-	expression = expression.replace('^', '**').replace('***', '**') #冪乗表現を変更
+	expression = expression.replace('^', '**').replace('***', '**') #冪乗表現を変更。add_multiplicationで*が一つ多く付けられてしまう不具合があるので、ここで修正。
 
 	converted_formula = sympify(expression) #Sympyオブジェクト化
 	return converted_formula
