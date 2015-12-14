@@ -6,10 +6,11 @@ from Cython.Distutils import build_ext
 
 ext_modules = [
     Extension( "parseExpression", ["parseExpression.pyx"] ),
+    Extension( "add_multiplication", ["add_multiplication.pyx"])
 ]
 
 setup(
-    name = "parse expression",
+    name = "parseExpression",
     cmdclass = { "build_ext" : build_ext },
     ext_modules = ext_modules,
 )

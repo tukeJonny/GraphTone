@@ -15,21 +15,29 @@ use "%20" to input space
 '''
 
 #server
+
+import sys
 import threading
 import urlparse
 import zipfile
 import time
 import socket
-import sys
 import os
+import subprocess
+
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from SocketServer import ThreadingMixIn
+
 #make image
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))) )
-from make_image import *
+sys.path.append('../make_image')
+import makeimage
 #make sound
-from make_sound import *
-from numerical_formula import *
+sys.path.append('../make_sound')
+import gensound
+sys.path.append('../numerical_formula')
+import parseExpression
+sys.path.append('../make_text_for_read')
+import makeinfo
 
 
 
@@ -73,10 +81,17 @@ class Handler(BaseHTTPRequestHandler):
         print "make image..."
         makeimage.makePng(self.exp, self.xPosArray, self.yPosArray)
 
+    def make_say_text(self):
+        print "make say_text..."
+        sayobj = makeinfo.SAYINFO(self.exp, self.xPosArray, self.yPosArray)
+        ret = sayobj.makeSayStr()
+        return ret
+
     def make_response(self):
         print "making response..."
         if(self.exp and self.range):
-            self.make_sound() 
+            self.make_sound()
+            self.make_say_text()
             self.make_image()
 
     def read_file(self):
@@ -86,6 +101,10 @@ class Handler(BaseHTTPRequestHandler):
         for line in f:
             message_parts.append(line)
         self.message = "".join(message_parts)
+
+    def join_mp3(self, a, b, output):
+        #print "Check here...: %s"%subprocess.check_output("ls -al", shell=True)
+        subprocess.check_output("echo \"y\" | ffmpeg -i %s -i %s -filter_complex \"concat=n=2:v=0:a=1\" %s"%(a,b,output), shell=True)
 
     def zip(self):
         print "make zip file..."
@@ -112,6 +131,7 @@ class Handler(BaseHTTPRequestHandler):
         #time.sleep(10)         #wait check
         self.send_response(200)
         self.end_headers()
+        self.join_mp3("say.mp3", "graph.mp3", "output.mp3")
         self.zip()
         self.read_file()
         self.wfile.write(self.message)

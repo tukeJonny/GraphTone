@@ -21,7 +21,7 @@ def to_string(list):
 
 
 def string_list(exp):
-	string_list = list(exp)
+	string_list = list(str(exp))
 	return string_list
 
 #string型
@@ -42,19 +42,19 @@ def re_convertor(exp):
 
 
 
-def discrimination(char):
+def discrimination(c):
 	#print char
-	if(char.isdigit()):
+	if(c.isdigit()):
 		return 0
-	elif(char in trigon_log):
+	elif(c in trigon_log):
 		return 1
-	elif(char in operand):
+	elif(c in operand):
 		return 2
-	elif(char == left_parenthesis):
+	elif(c == left_parenthesis):
 		return 3
-	elif(char == right_parenthesis):
+	elif(c == right_parenthesis):
 		return 4	
-	elif(char == dot):
+	elif(c == dot):
 		return 5
 	else:
 		return 6
@@ -105,7 +105,7 @@ def main(exp):
 	new_exp = add_multiplication(exp_type,exp_list)
 	new_exp = to_string(new_exp)
 	new_exp = re_convertor(new_exp)
-	print new_exp
+	return new_exp
 
 
 if __name__ == '__main__':

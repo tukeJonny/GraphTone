@@ -1,1 +1,1 @@
-__all__ = ["parseExpression"]
+__all__ = ["parseExpression", "add_multiplication"]

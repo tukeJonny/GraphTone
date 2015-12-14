@@ -3,9 +3,13 @@ from math import sin, cos, tan, log, radians
 import re
 
 import numpy
-import pyaudio
+from sympy import*
+
+import add_multiplication as am
+
 
 split_operator = lambda formula: re.split(r'(?<!\()[+ \-]', formula)
+
 
 #演算子の取り出し
 def extract_operator(formula):
@@ -46,15 +50,19 @@ def convertMultiple(sections, target):
 	return sections
 
 #関数に値xを代入した、結果の値を返す
-def function(formula, x):
-	str_x = str(x)
-	if x < 0: #負の値が来た時、括弧でくくってやる
-		str_x = "(" + str_x + ")"
-	inserted_formula = formula.replace("x", str_x)
-	return eval(inserted_formula)
-
+def function(obj, val):
+	x=Symbol('x')
+	try:
+		ret = float(obj.subs([(x, val)]))
+	except TypeError as err:
+		print str(err)
+		return ret
+	return ret
 
 def convertExpression(expression):
+	print "expression="
+	print expression
+	"""
 	formula = expression.split('=')[1] #右辺の取り出し
 	#冪上を括弧で囲む
 	formula = re.sub(r'\^([^+ \- \* \/]+)', r'^(\1)', formula)
@@ -88,14 +96,32 @@ def convertExpression(expression):
 	print "Converted " + converted_formula + "!!"
 
 	return converted_formula
-	
+	"""
+	x = Symbol('x')
+	if "=" in str(expression):
+		expression = expression.split('=')[1] #右辺の取り出し
+	expression = am.main(expression) #適切に乗算演算子を付加
+	expression = expression.replace('^', '**').replace('***', '**') #冪乗表現を変更
+
+	converted_formula = sympify(expression) #Sympyオブジェクト化
+	return converted_formula
+
+def sym2str(sympyobj):
+	ret = str(sympyobj).replace('**', '^')
+	return "y=%s"%ret
+
 def getCoordinate(exp, begin, end):
 	conv_exp = convertExpression(exp)
-	print "Expression: " + conv_exp
-	print "Converted: " + conv_exp
-	xPosArray = [float(x) for x in range(begin, end+1)]
-	yPosArray = [float(function(conv_exp, x)) for x in xPosArray]
-
+	print function(conv_exp, 5)
+	xPosArray = [x for x in range(begin, end+1)]
+	x = Symbol('x')
+	print "xPosArray = %s"%str(xPosArray)
+	try:
+		yPosArray = [float(function(conv_exp, pos)) for pos in xPosArray]
+	except TypeError as err:
+		print str(err)
+		yPosArray = [function(conv_exp, pos) for pos in xPosArray]
+	print "yPosArray = %s"%str(yPosArray)
 	return (xPosArray, yPosArray)
 
 def main():

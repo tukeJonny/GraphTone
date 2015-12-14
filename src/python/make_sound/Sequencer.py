@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
 import math
+
+from decimal import*
+
 from Components import Config
 from Components import Clock
 from Components import Mixer
 from Components import Amplifeir
-from decimal import*
+
 
 class MyCompiler(object):
     def __init__(self, yPosMin, tempo=120, volume=8, on_length=4):

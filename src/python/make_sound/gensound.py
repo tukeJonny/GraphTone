@@ -1,4 +1,17 @@
 # -*- coding: utf-8 -*-
+from subprocess import*
+from time import*
+from os import*
+from decimal import*
+from math import*
+import sys
+import re
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pylab
+import scipy.io.wavfile
+
 from Components import Config
 from Components import ConstantValueGenerator
 from Components import SquareWaveOscillator
@@ -12,22 +25,12 @@ from Components import Mixer
 from Components import Amplifeir
 from Components import WaveFileSink
 from Components import Renderer
-
 from Sequencer import MyCompiler
 from Sequencer import Sequencer
 
-from subprocess import*
-from time import*
-from os import*
-import sys
-import re
-from decimal import*
-from math import*
-import numpy as np
-import matplotlib.pyplot as plt
-import pylab
-import scipy.io.wavfile
-from math import*
+
+
+
 
 #MML = "t120o4l4cdefedcrefgagfercrcrcrcrl16crcrdrdrererfrfrl4edcr"
 #MML = "cdefgabc+"
@@ -60,8 +63,8 @@ from math import*
 #付点
 #オクターブ増減
 
-outputWavFileName = "output.wav"
-outputMp3FileName = "output.mp3"
+outputWavFileName = "graph.wav"
+outputMp3FileName = "graph.mp3"
 
 #浮動小数点数ステップに対応したrange
 def drange(begin, end, step):

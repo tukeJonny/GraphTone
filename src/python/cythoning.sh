@@ -1,7 +1,7 @@
 #!/bin/bash
 
-directories=("make_sound" "numerical_formula" "make_image" "make_text_for_read")
-files=("gensound" "parseExpression" "makeimage" "makeinfo")
+directories=("make_sound" "numerical_formula" "numerical_formula" "make_image" "make_text_for_read")
+files=("gensound" "parseExpression" "add_multiplication" "makeimage" "makeinfo")
 
 for (( r = 0; r < $((${#files[@]})); r++ )); do
 	echo "cythoning ${directories[$r]} process..."
