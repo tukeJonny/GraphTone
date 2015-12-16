@@ -16,8 +16,6 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     //一行に配置するボタンの数
     let xButtonCount = 5
     let yButtonCount = 6
-    let xsubButtonCount = 5
-    let ysubButtonCount = 2
     let screenWidth:Double = Double(UIScreen.mainScreen().bounds.size.width)
     let screenHeight:Double = Double(UIScreen.mainScreen().bounds.size.height)
     let buttonMargin = 0.0
@@ -32,14 +30,40 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     var host1 = ""
     
     // IPアドレスの設定
-    // let myIP = "192.168.43.223"
-    // let myIP = "192.168.100.102"
-    let myIP = "192.168.1.3"
+    let myIP = "192.168.43.223"         // nashiAP
+    // let myIP = "192.168.100.102"     // jony's wifi
+    // let myIP = "192.168.1.3"         // my wifi
+    
+    let buttonLabels = [
+        "sin","cos","tan","←","→",
+        "x","x^2","x^3","□^x","log",
+        "7","8","9","(",")",
+        "4","5","6","+","-",
+        "1","2","3","/","",
+        "0","00",".","DEL","AC"
+    ]
+    
+    let buttonVal = [
+        "sin":"sin(", "cos":"cos(", "tan":"tan(", "←":"", "→":"",
+        "x":"x", "x^2":"x^(2", "x^3":"x^(3", "□^x":"^(x", "log":"log(",
+    ]
+    
+    let buttonTitles = [
+        "サインかっこ","コサインかっこ","タンジェントかっこ","左に移動","右に移動",
+        "x","x2乗","x3乗","x乗","ログかっこ",
+        "7","8","9","かっこはじめ","かっこ終わり",
+        "4","5","6","+","マイナス",
+        "1","2","3","/","",
+        "0","00","点","一つ戻る","すべて消す"
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "数式入力"
-        self.navigationController?.navigationBar.frame.size.height = self.view.bounds.height*0.06
+        // NavigationBarにボタンを設置
+        let settingButton: UIBarButtonItem!
+        settingButton = UIBarButtonItem(title: "設定", style: .Plain, target: self, action: "onClickSetButton:")
+        self.navigationItem.rightBarButtonItem = settingButton
         self.view.backgroundColor = UIColor.whiteColor()
         
         sendButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width*0.98,self.view.bounds.height*0.12))
@@ -64,24 +88,6 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         resultTextView.editable = false
         self.view.addSubview(resultTextView)
         
-        let buttonLabels = [
-            "sin(","cos(","tan(","←","→",
-            "x","x^(2","x^(3","^(x","log(",
-            "7","8","9","(",")",
-            "4","5","6","+","-",
-            "1","2","3","/","",
-            "0","00",".","DEL","AC"
-        ]
-        
-        let buttonTitles = [
-            "サインかっこ","コサインかっこ","タンジェントかっこ","左に移動","右に移動",
-            "x","x2乗","x3乗","x乗","ログかっこ",
-            "7","8","9","かっこはじめ","かっこ終わり",
-            "4","5","6","+","マイナス",
-            "1","2","3","/","",
-            "0","00","点","一つ戻る","すべて消す"
-        ]
-        
         for var y=0; y<yButtonCount; y++ {
             for var x=0; x<xButtonCount; x++ {
                 let button = UIButton()
@@ -89,7 +95,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
                 let buttonPositionX = (screenWidth - 2.0) / Double(xButtonCount) * Double(x) + 2.0
                 let tes = (screenHeight*0.95 - Double(resultArea) - buttonMargin - screenHeight*0.2) / Double(yButtonCount) * Double(y)
                 let buttonPositionY = tes + buttonMargin + Double(resultArea*1.6)
-                button.frame = CGRect(x:buttonPositionX, y:buttonPositionY, width:screenWidth*0.189, height:screenWidth*0.15)
+                button.frame = CGRect(x:buttonPositionX, y:buttonPositionY, width:screenWidth*0.189, height:screenHeight*0.089)
                 button.backgroundColor = UIColor.blackColor()
                 
                 let buttonNumber = y * xButtonCount + x
@@ -100,6 +106,8 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
                 print("num:\(buttonNumber), title:\(button.accessibilityLabel)")
                 if buttonNumber == 3 || buttonNumber == 4 {
                     button.addTarget(self, action: "arrow_pushed:", forControlEvents: UIControlEvents.TouchUpInside)
+                } else if buttonNumber == 24 {
+                    
                 } else {
                     button.addTarget(self, action: "button_pushed:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
@@ -148,7 +156,11 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
             exp = ""
             expArray = []
         default:
-            expArray.append(pushedNum)
+            if (buttonVal[pushedNum] != nil) {
+                expArray.append(buttonVal[pushedNum]!)
+            } else {
+                expArray.append(pushedNum)
+            }
         }
         exp = ""
         for data in expArray {

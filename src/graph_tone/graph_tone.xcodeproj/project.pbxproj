@@ -16,8 +16,8 @@
 		5118BA5E1BC4C038001B835A /* graph_toneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA5D1BC4C038001B835A /* graph_toneTests.swift */; };
 		5118BA681BC4C084001B835A /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA671BC4C084001B835A /* FirstViewController.swift */; };
 		5118BA6A1BC4C099001B835A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA691BC4C099001B835A /* SecondViewController.swift */; };
-		5118BA6C1BC4C0B3001B835A /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */; };
 		5118BA701BC4C179001B835A /* hoge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5118BA6F1BC4C179001B835A /* hoge.m */; };
+		51BF68B61C210D1B000CB8B3 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BF68B51C210D1B000CB8B3 /* SettingViewController.swift */; };
 		51C8CC1F1BFEFCDD00D6D45B /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,10 +46,10 @@
 		5118BA5D1BC4C038001B835A /* graph_toneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graph_toneTests.swift; sourceTree = "<group>"; };
 		5118BA671BC4C084001B835A /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		5118BA691BC4C099001B835A /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
-		5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		5118BA6D1BC4C178001B835A /* graph_tone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "graph_tone-Bridging-Header.h"; sourceTree = "<group>"; };
 		5118BA6E1BC4C179001B835A /* hoge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hoge.h; sourceTree = "<group>"; };
 		5118BA6F1BC4C179001B835A /* hoge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hoge.m; sourceTree = "<group>"; };
+		51BF68B51C210D1B000CB8B3 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		7E56B0D9F099C26F3097C2DE /* libPods-graph_tone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-graph_tone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -100,7 +100,7 @@
 				5118BA671BC4C084001B835A /* FirstViewController.swift */,
 				51C8CC1E1BFEFCDD00D6D45B /* InputViewController.swift */,
 				5118BA691BC4C099001B835A /* SecondViewController.swift */,
-				5118BA6B1BC4C0B3001B835A /* ThirdViewController.swift */,
+				51BF68B51C210D1B000CB8B3 /* SettingViewController.swift */,
 				5118BA491BC4C038001B835A /* ViewController.swift */,
 				5118BA4B1BC4C038001B835A /* Main.storyboard */,
 				5118BA4E1BC4C038001B835A /* Images.xcassets */,
@@ -323,7 +323,7 @@
 			files = (
 				5118BA6A1BC4C099001B835A /* SecondViewController.swift in Sources */,
 				5118BA681BC4C084001B835A /* FirstViewController.swift in Sources */,
-				5118BA6C1BC4C0B3001B835A /* ThirdViewController.swift in Sources */,
+				51BF68B61C210D1B000CB8B3 /* SettingViewController.swift in Sources */,
 				51C8CC1F1BFEFCDD00D6D45B /* InputViewController.swift in Sources */,
 				5118BA4A1BC4C038001B835A /* ViewController.swift in Sources */,
 				5118BA701BC4C179001B835A /* hoge.m in Sources */,

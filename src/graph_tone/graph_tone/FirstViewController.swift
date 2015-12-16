@@ -61,9 +61,12 @@ class FirstViewController: UIViewController {
     internal func onClickSelectButton(sender: UIButton){
         
         // 画面遷移
-        let myThirdViewController: UIViewController = SecondViewController()
-        //mySecondViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
-        self.presentViewController(myThirdViewController, animated: true, completion: nil)
+        // let myViewController: UIViewController = SecondViewController()
+        // self.navigationController?.pushViewController(myViewController, animated: true)
+    }
+    
+    internal func onClickSetButton(sender: UIButton){
+        
     }
     
     override func didReceiveMemoryWarning() {
