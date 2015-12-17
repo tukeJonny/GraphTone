@@ -72,13 +72,13 @@ def drange(begin, end, step):
     while n <= end+step:
         yield n
         n += step
-xyrange = 100
+xyrange = 360
 formula = lambda x: x**3
 #xPosArray = [x for x in drange(-float(xyrange), float(xyrange), 0.1)]
 #yPosArray = [formula(x) for x in drange(-float(xyrange), float(xyrange), 0.1)]
 
-xPosArray = [x for x in drange(-float(xyrange), float(xyrange), 0.1)]
-yPosArray = [formula(x) for x in drange(-float(xyrange), float(xyrange), 0.1)]
+xPosArray = [x for x in drange(-float(xyrange), float(xyrange), 1.0)]
+yPosArray = [formula(x) for x in drange(-float(xyrange), float(xyrange), 1.0)]
 
 
 #Toneクラス

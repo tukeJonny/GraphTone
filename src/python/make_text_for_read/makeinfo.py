@@ -67,7 +67,7 @@ class SAYINFO():
 		Dir.append(-1 if diffy < 0 else 1)
 		#極値を持たないなら、増減の変化が起き得ない
 		#また、導関数=0の解が得られないなら増減が起きないことがわかる
-		if self.hasExtremum() and self.intersect is not False:
+		if self.hasExtremum() and self.intersect is not []:
 			#expressionを微分した式のx軸との交点で
 			for r in range(1, len(self.intersect)+1):
 				Dir.append(Dir[0]*((-1)**r))
@@ -112,7 +112,7 @@ class SAYINFO():
 	def calcExtremum(self, express):
 		#express = sympify(self.noradian_str(express))
 		#express = express
-		if self.hasExtremum() and self.intersect is not False:
+		if self.hasExtremum() and self.intersect is not []:
 			extremum = []
 			#[express.subs([(self.x, r)]) for r in self.intersect]
 			for r in self.intersect:
