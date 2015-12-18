@@ -65,6 +65,7 @@ from Sequencer import Sequencer
 
 outputWavFileName = "graph.wav"
 outputMp3FileName = "graph.mp3"
+sayVolume = 768
 
 #浮動小数点数ステップに対応したrange
 def drange(begin, end, step):
@@ -125,7 +126,7 @@ def generateWavFile(yPosArray, tempo, volume):
 
 #Wavファイル -> mp3ファイル変換
 def convertWavToMp3():
-    check_output('echo "y" | ffmpeg -i ' + outputWavFileName + ' -ab 128 ' + outputMp3FileName, shell=True) #yを出力させているのは、同じファイル名のmp3ファイルを上書きするようにするため
+    check_output('echo "y" | ffmpeg -i %s -ab 128 %s'%(outputWavFileName,outputMp3FileName), shell=True) #yを出力させているのは、同じファイル名のmp3ファイルを上書きするようにするため
 
 ##################################### Debug #####################################
 def plot_waveform ( waveform , sampling_rate ):

@@ -198,7 +198,7 @@ class SAYINFO():
 		else:
 			text += "極ちわありません。"
 		subprocess.check_output("say -v Kyoko -o say.wav --file-format=WAVE --data-format=LEI16@44100 '%s'"%text, shell=True)
-		subprocess.check_output('echo "y" | ffmpeg -i %s -ab 128 %s'%("say.wav", "say.mp3"), shell=True) #mp3に変換
+		subprocess.check_output('echo "y" | ffmpeg -i %s -ab 128 %s -vol %d'%("say.wav", "say.mp3", 768), shell=True) #mp3に変換
 		return text
 
 def main():
