@@ -22,16 +22,15 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     var exp = ""
     var expArray: [String] = []
     var sendButton: UIButton!
-    var maxrange = 10
-    var minrange = -10
     var count = 0
     let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
     let speech = AVSpeechSynthesizer()
+    let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var host1 = ""
     
     // IPアドレスの設定
-    let myIP = "192.168.43.223"         // nashiAP
-    // let myIP = "192.168.100.102"     // jony's wifi
+    // let myIP = "192.168.43.223"         // nashiAP
+    let myIP = "192.168.100.107"     // jony's wifi
     // let myIP = "192.168.1.3"         // my wifi
     
     let buttonLabels = [
@@ -62,7 +61,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         self.title = "数式入力"
         // NavigationBarにボタンを設置
         let settingButton: UIBarButtonItem!
-        settingButton = UIBarButtonItem(title: "設定", style: .Plain, target: self, action: "onClickSetButton:")
+        settingButton = UIBarButtonItem(title: "範囲", style: .Plain, target: self, action: "onClickSetButton:")
         self.navigationItem.rightBarButtonItem = settingButton
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -117,29 +116,33 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     }
     
     internal func onClicksendButton(sender: UIButton){
-        if exp != "" {
-            // 通信処理
-            let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.expVal = exp
-            let urlExp = uriEncode(exp)
-            host1 = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(minrange):\(maxrange)"
-            appDelegate.hostUrl = host1
-            print(host1)
-            self.getData(host1)
-            
-        } else {
-            print("no exp")
-            let utterance1 = AVSpeechUtterance(string: "式未入力です。式を入力してください。")
-            utterance1.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-            utterance1.rate = 0.6
+        if appDelegate.maxrange <= appDelegate.minrange  {
+            print("range error")
+            let utterance = AVSpeechUtterance(string: "選択範囲が不正です。設定しなおしてください")
+            utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+            utterance.rate = 0.6
             let speech = AVSpeechSynthesizer()
-            speech.speakUtterance(utterance1)
+            speech.speakUtterance(utterance)
+            
+        }else {
+            if exp != "" {
+                // 通信処理
+                appDelegate.expVal = exp
+                let urlExp = uriEncode(exp)
+                host1 = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(appDelegate.minrange):\(appDelegate.maxrange)"
+                appDelegate.hostUrl = host1
+                print(host1)
+                self.getData(host1)
+            } else {
+                print("no exp")
+                let utterance = AVSpeechUtterance(string: "式未入力です。式を入力してください。")
+                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                utterance.rate = 0.6
+                let speech = AVSpeechSynthesizer()
+                speech.speakUtterance(utterance)
+            }
+            
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func button_pushed(sender:UIButton){
@@ -168,6 +171,11 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         }
         print(exp)
         resultTextView.text = "y=" + exp
+    }
+    
+    internal func onClickSetButton(sender: UIButton){
+        let myViewController: UIViewController = SettingViewController()
+        self.navigationController?.pushViewController(myViewController, animated: true)
     }
     
     func arrow_pushed(sender:UIButton){
@@ -224,7 +232,13 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     func dispatch_async_main(block: () -> ()) {
         dispatch_async(dispatch_get_main_queue(), block)
     }
+    
     func dispatch_async_global(block: () -> ()) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 }

@@ -61,12 +61,8 @@ class FirstViewController: UIViewController {
     internal func onClickSelectButton(sender: UIButton){
         
         // 画面遷移
-        // let myViewController: UIViewController = SecondViewController()
+        // let myViewController: UIViewController = SettingViewController()
         // self.navigationController?.pushViewController(myViewController, animated: true)
-    }
-    
-    internal func onClickSetButton(sender: UIButton){
-        
     }
     
     override func didReceiveMemoryWarning() {

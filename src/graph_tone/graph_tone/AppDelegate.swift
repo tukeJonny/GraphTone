@@ -14,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var myNavigationController: UINavigationController?
     var hostUrl: String? = ""
     var expVal: String? = ""
+    var maxrange: Int = 10
+    var minrange: Int = -10
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         

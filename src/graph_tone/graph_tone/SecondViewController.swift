@@ -13,23 +13,21 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     
     var myTextField: UITextField!
     var expLabel: UILabel!
-    var rangeTextField1: UITextField!
-    var rangeTextField2: UITextField!
+    var rangeLabel: UILabel!
     var myButton: UIButton!
     var infoButton: UIButton!
     var graphPlayer : AVAudioPlayer!
     var infoPlayer : AVAudioPlayer!
     var myImageView: UIImageView!
     var myTextView: UITextView!
-    var maxrange = 10
-    var minrange = -10
     var myUIPicker: UIPickerView = UIPickerView()
     var rangeData : [String] = []
     var count = 0
     let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
     let speech = AVSpeechSynthesizer()
-    let myIP = "192.168.43.223"         // nashiAP
-    // let myIP = "192.168.100.102"     // jony's wifi
+    var cnt = 0
+    // let myIP = "192.168.43.223"         // nashiAP
+    let myIP = "192.168.100.107"     // jony's wifi
     // let myIP = "192.168.1.3"         // my wifi
     
     let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -38,7 +36,10 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "音声再生"
-        self.navigationController?.navigationBar.frame.size.height = self.view.bounds.height*0.06
+        // NavigationBarにボタンを設置
+        let settingButton: UIBarButtonItem!
+        settingButton = UIBarButtonItem(title: "範囲", style: .Plain, target: self, action: "onClickSetButton:")
+        self.navigationItem.rightBarButtonItem = settingButton
         self.view.backgroundColor = UIColor.whiteColor()
         
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -49,56 +50,28 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         expLabel.font = UIFont.systemFontOfSize(40)
         expLabel.text = "y=" + exp!
         expLabel.textAlignment = NSTextAlignment.Center
-        expLabel.layer.position = CGPoint(x:self.view.bounds.width/2, y:self.view.bounds.height*0.55)
+        expLabel.layer.position = CGPoint(x:self.view.bounds.width/2, y:self.view.bounds.height*0.6)
         self.view.addSubview(expLabel)
         
-        
-        rangeTextField1 = UITextField(frame: CGRectMake(0,0,100,50))
-        rangeTextField1.text = String(maxrange)
-        rangeTextField1.delegate = self
-        rangeTextField1.borderStyle = UITextBorderStyle.Line
-        rangeTextField1.textAlignment = NSTextAlignment.Center
-        rangeTextField1.layer.position = CGPoint(x:self.view.bounds.width*0.8, y:self.view.bounds.height*0.68);
-        self.view.addSubview(rangeTextField1)
-        
-        rangeTextField2 = UITextField(frame: CGRectMake(0,0,100,50))
-        rangeTextField2.text = String(minrange)
-        rangeTextField2.delegate = self
-        rangeTextField2.borderStyle = UITextBorderStyle.Line
-        rangeTextField2.textAlignment = NSTextAlignment.Center
-        rangeTextField2.layer.position = CGPoint(x:self.view.bounds.width*0.2, y:self.view.bounds.height*0.68);
-        self.view.addSubview(rangeTextField2)
-        
-        
-        // Pickerの生成
-        for i in -30...30 {
-            rangeData.append("\(i)")
-        }
-        print(rangeData)
-        
-        myUIPicker.frame = CGRectMake(self.view.bounds.width*0.7,self.view.bounds.height*0.68, self.view.bounds.width*0.5, self.view.bounds.width*0.5)
-        myUIPicker.delegate = self
-        myUIPicker.dataSource = self
-        self.view.addSubview(myUIPicker)
-        
-        
-        let label = UILabel(frame: CGRectMake(0, 0, 100, 50))
-        label.text = " ≦ x ≦";
-        label.layer.position = CGPoint(x:self.view.bounds.width*0.575, y:self.view.bounds.height*0.68)
-        self.view.addSubview(label)
-        
+        /*
+        rangeLabel = UILabel(frame: CGRectMake(0, 0, self.view.bounds.width, 50))
+        rangeLabel.font = UIFont.systemFontOfSize(40)
+        rangeLabel.text = "\(appDelegate.minrange) ≦ x ≦ \(appDelegate.maxrange)"
+        rangeLabel.accessibilityLabel = "グラフ範囲は\(appDelegate.minrange)から\(appDelegate.maxrange)まで"
+        rangeLabel.textAlignment = NSTextAlignment.Center
+        rangeLabel.layer.position = CGPoint(x:self.view.bounds.width*0.5, y:self.view.bounds.height*0.7)
+        self.view.addSubview(rangeLabel)
+*/
         
         // 画像表示
         let imagePath = "\(self.documentsPath)/output.png"
         self.myImageView = UIImageView(frame: CGRectMake(0,0,self.view.bounds.width*0.8, self.view.bounds.height*0.5))
         let myImage: UIImage = UIImage(contentsOfFile: imagePath)!
         self.myImageView.image = myImage
-        self.myImageView.layer.position = CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height*0.26)
+        self.myImageView.layer.position = CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height*0.3)
         self.view.addSubview(self.myImageView)
         
         // 音源設定
-        // let soundFilePath : NSString = NSBundle.mainBundle().pathForResource("alarm1", ofType: "mp3")!
-        // let fileURL : NSURL = NSURL(fileURLWithPath: soundFilePath as String)
         let soundPath = "\(self.documentsPath)/graph.mp3"
         let fileURL : NSURL = NSURL(fileURLWithPath: soundPath)
         self.graphPlayer = try? AVAudioPlayer(contentsOfURL: fileURL)
@@ -128,47 +101,27 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         infoButton.addTarget(self, action: "onClickInfoButton:", forControlEvents: .TouchUpInside)
         self.view.addSubview(infoButton);
     }
-    /*
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        let spc = formulaCheck(myTextField.text!)
-        print(spc)
-        let utterance2 = AVSpeechUtterance(string: spc)
-        utterance2.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-        utterance2.rate = 0.6
-        speech.speakUtterance(utterance2)
-        let utterance3 = AVSpeechUtterance(string: "下の再生ボタンを押してください")
-        utterance3.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-        utterance3.rate = 0.6
-        speech.speakUtterance(utterance3)
-        
-        return true
-    }
-    */
     
     // ボタンがタップされた時に呼ばれるメソッド.
     func onClickMyButton(sender: UIButton){
         // exp = uriEncode(myTextField.text!)
+        
         if graphPlayer.playing == true {
             //graphPlayerを一時停止.
             graphPlayer.pause()
             sender.setTitle("音声再生", forState: .Normal)
         } else {
-            maxrange = Int(rangeTextField1.text!)!
-            minrange = Int(rangeTextField2.text!)!
-            
             let urlExp = uriEncode(appDelegate.expVal!)
-            let host = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(minrange):\(maxrange)"
+            let host = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(appDelegate.minrange):\(appDelegate.maxrange)"
             
             if currentHost != host {
                 currentHost = host
                 self.getData(host)
             } else {
-                self.graphPlayer.play()
+                graphPlayer.play()
                 print("graph playing...")
+                sender.setTitle("停止", forState: .Normal)
             }
-            sender.setTitle("停止", forState: .Normal)
         }
         print("sender.currentTitile: \(sender.currentTitle)")
         print("sender.tag:\(sender.tag)")
@@ -181,17 +134,14 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
             infoPlayer.pause()
             sender.setTitle("情報再生", forState: .Normal)
         } else {
-            maxrange = Int(rangeTextField1.text!)!
-            minrange = Int(rangeTextField2.text!)!
-            
             let urlExp = uriEncode(appDelegate.expVal!)
-            let host = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(minrange):\(maxrange)"
+            let host = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(appDelegate.minrange):\(appDelegate.maxrange)"
             
             if currentHost != host {
                 currentHost = host
                 self.getData(host)
             } else {
-                self.infoPlayer.play()
+                infoPlayer.play()
                 print("information playing...")
             }
             sender.setTitle("停止", forState: .Normal)
@@ -235,10 +185,10 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
                     
                     // 画像表示
                     let imagePath = "\(self.documentsPath)/output.png"
-                    self.myImageView = UIImageView(frame: CGRectMake(0,0,260,260))
+                    self.myImageView = UIImageView(frame: CGRectMake(0,0,self.view.bounds.width*0.8, self.view.bounds.height*0.5))
                     let myImage: UIImage = UIImage(contentsOfFile: imagePath)!
                     self.myImageView.image = myImage
-                    self.myImageView.layer.position = CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height*0.26)
+                    self.myImageView.layer.position = CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height*0.3)
                     self.view.addSubview(self.myImageView)
                 } else {
                     SVProgressHUD.showErrorWithStatus("失敗!")
@@ -249,10 +199,16 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     }
     
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        print("Music Finish")
         // 再度myButtonを"▶︎"に設定.
-        myButton.setTitle("音声再生", forState: .Normal)
-        infoButton.setTitle("音声再生", forState: .Normal)
+        switch(player){
+        case graphPlayer:
+            myButton.setTitle("音声再生", forState: .Normal)
+        case infoPlayer:
+            infoButton.setTitle("音声再生", forState: .Normal)
+        default:
+            print("error")
+        }
+        print("Music Finish")
     }
     
     func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
@@ -280,6 +236,26 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         print("row: \(row)")
         print("value: \(rangeData[row])")
+    }
+    
+    internal func onClickSetButton(sender: UIButton){
+        let myViewController: UIViewController = SettingViewController()
+        self.navigationController?.pushViewController(myViewController, animated: true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if cnt > 0{
+            rangeLabel.hidden = true
+        }
+        rangeLabel = UILabel(frame: CGRectMake(0, 0, self.view.bounds.width, 50))
+        rangeLabel.font = UIFont.systemFontOfSize(30)
+        rangeLabel.text = "\(appDelegate.minrange) ≦ x ≦ \(appDelegate.maxrange)"
+        rangeLabel.accessibilityLabel = "グラフ範囲は\(appDelegate.minrange)から\(appDelegate.maxrange)まで"
+        rangeLabel.textAlignment = NSTextAlignment.Center
+        rangeLabel.layer.position = CGPoint(x:self.view.bounds.width*0.5, y:self.view.bounds.height*0.7)
+        self.view.addSubview(rangeLabel)
+        cnt++
     }
     
     override func didReceiveMemoryWarning() {
