@@ -21,6 +21,8 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     let buttonMargin = 0.0
     var exp = ""
     var expArray: [String] = []
+    var expLabel = ""
+    var expLabelArray: [String] = []
     var sendButton: UIButton!
     var count = 0
     let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
@@ -98,6 +100,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
                 button.backgroundColor = UIColor.blackColor()
                 
                 let buttonNumber = y * xButtonCount + x
+                button.tag = buttonNumber
                 button.titleLabel!.font = UIFont.systemFontOfSize(CGFloat(25))
                 button.setTitle(buttonLabels[buttonNumber],forState: UIControlState.Normal)
                 // button.setTitleColor(UIColor.yellowColor(), forState: UIControlState.Normal)
@@ -128,6 +131,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
             if exp != "" {
                 // 通信処理
                 appDelegate.expVal = exp
+                appDelegate.expLabelVal = expLabel
                 let urlExp = uriEncode(exp)
                 host1 = "http://\(myIP):8080?expression=y=\(urlExp)&image=True&sound=True&range=\(appDelegate.minrange):\(appDelegate.maxrange)"
                 appDelegate.hostUrl = host1
@@ -154,23 +158,36 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
                 break
             } else {
                 expArray.removeLast()
+                expLabelArray.removeLast()
             }
         case "AC":
             exp = ""
             expArray = []
+            expLabelArray = []
         default:
             if (buttonVal[pushedNum] != nil) {
                 expArray.append(buttonVal[pushedNum]!)
             } else {
                 expArray.append(pushedNum)
             }
+            expLabelArray.append(buttonTitles[sender.tag])
+            print(expLabelArray)
         }
+        
         exp = ""
         for data in expArray {
             exp += data
         }
         print(exp)
         resultTextView.text = "y=" + exp
+        
+        expLabel = ""
+        for labelData in expLabelArray {
+            expLabel += labelData
+        }
+        print(expLabel)
+        resultTextView.accessibilityLabel = "y=" + expLabel
+        
     }
     
     internal func onClickSetButton(sender: UIButton){

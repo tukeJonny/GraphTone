@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var myNavigationController: UINavigationController?
     var hostUrl: String? = ""
     var expVal: String? = ""
+    var expLabelVal: String? = ""
     var maxrange: Int = 10
     var minrange: Int = -10
     

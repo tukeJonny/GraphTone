@@ -44,7 +44,7 @@ class FirstViewController: UIViewController {
         selectButton.titleLabel!.font = UIFont.systemFontOfSize(CGFloat(25))
         // selectButton.layer.cornerRadius = 20.0
         selectButton.layer.position = CGPoint(x: self.view.bounds.width/2 , y:self.view.bounds.height*0.85)
-        selectButton.addTarget(self, action: "onClickSelectButton:", forControlEvents: .TouchUpInside)
+        selectButton.addTarget(self, action: "onClickSetButton:", forControlEvents: .TouchUpInside)
         
         // ボタンを追加する.
         self.view.addSubview(inputButton);
@@ -58,11 +58,9 @@ class FirstViewController: UIViewController {
         self.navigationController?.pushViewController(inputViewController, animated: true)
     }
     
-    internal func onClickSelectButton(sender: UIButton){
-        
-        // 画面遷移
-        // let myViewController: UIViewController = SettingViewController()
-        // self.navigationController?.pushViewController(myViewController, animated: true)
+    internal func onClickSetButton(sender: UIButton){
+        let myViewController: UIViewController = SettingViewController()
+        self.navigationController?.pushViewController(myViewController, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

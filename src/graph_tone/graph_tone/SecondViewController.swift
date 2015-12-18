@@ -49,6 +49,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         expLabel = UILabel(frame: CGRectMake(0,0,self.view.bounds.width,60))
         expLabel.font = UIFont.systemFontOfSize(40)
         expLabel.text = "y=" + exp!
+        expLabel.accessibilityLabel = appDelegate.expLabelVal
         expLabel.textAlignment = NSTextAlignment.Center
         expLabel.layer.position = CGPoint(x:self.view.bounds.width/2, y:self.view.bounds.height*0.6)
         self.view.addSubview(expLabel)
