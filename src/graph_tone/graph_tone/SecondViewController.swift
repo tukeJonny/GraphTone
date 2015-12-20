@@ -27,7 +27,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
     let speech = AVSpeechSynthesizer()
     var cnt = 0
     // let myIP = "192.168.43.223"         // nashiAP
-    let myIP = "192.168.100.107"     // jony's wifi
+    let myIP = "192.168.100.110"     // jony's wifi
     // let myIP = "192.168.1.3"         // my wifi
     
     let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -97,7 +97,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
         // 情報ボタンを作成.
         infoButton = UIButton(frame: CGRectMake(0,0,self.view.bounds.width,self.view.bounds.height*0.1))
         infoButton.backgroundColor = UIColor.redColor();
-        infoButton.setTitle("グラフ情報", forState: .Normal)
+        infoButton.setTitle("情報再生", forState: .Normal)
         infoButton.layer.position = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height*0.96)
         infoButton.addTarget(self, action: "onClickInfoButton:", forControlEvents: .TouchUpInside)
         self.view.addSubview(infoButton);
@@ -191,6 +191,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, AVAudioPlayer
                     self.myImageView.image = myImage
                     self.myImageView.layer.position = CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height*0.3)
                     self.view.addSubview(self.myImageView)
+                    
                 } else {
                     SVProgressHUD.showErrorWithStatus("失敗!")
                     // エラーハンドリング

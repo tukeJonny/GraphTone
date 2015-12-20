@@ -32,7 +32,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
     
     // IPアドレスの設定
     // let myIP = "192.168.43.223"         // nashiAP
-    let myIP = "192.168.100.107"     // jony's wifi
+    let myIP = "192.168.100.110"     // jony's wifi
     // let myIP = "192.168.1.3"         // my wifi
     
     let buttonLabels = [
@@ -82,6 +82,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         resultTextView = UITextView(frame: CGRectMake(self.view.bounds.width*0.03, self.view.bounds.height*0.11, self.view.bounds.width*0.94, resultArea))
         resultTextView.font = UIFont(name:"Arial", size: 40)
         resultTextView.textAlignment = NSTextAlignment.Right
+        resultTextView.textColor = UIColor.whiteColor()
         // resultLabel.numberOfLines = 4
         resultTextView.text = "y="
         // resultLabel.textColor = UIColor.yellowColor()
@@ -206,6 +207,7 @@ class InputViewController: UIViewController, AVAudioPlayerDelegate {
         SVProgressHUD.showWithStatus("読み込み中")
         dispatch_async_global {
             // 送信処理(同期)
+            
             let res:NSData = try! NSURLConnection.sendSynchronousRequest(myRequest, returningResponse: nil)
             let fileData = res
             let fileName = "send.zip"
